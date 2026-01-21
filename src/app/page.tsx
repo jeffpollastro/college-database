@@ -320,9 +320,24 @@ export default function Home() {
               <h2 className="text-xl font-semibold">
                 {schools.length > 0 ? `Found ${schools.length} Schools` : 'No Schools Found'}
               </h2>
-              {schools.length > 0 && (
-                <span className="text-sm text-gray-500">Sorted by lowest gap first</span>
-              )}
+              <div className="flex items-center gap-4">
+                {schools.length > 0 && (
+                  <span className="text-sm text-gray-600">Sorted by lowest gap first</span>
+                )}
+                <button
+                  onClick={() => {
+                    setSearched(false)
+                    setSchools([])
+                    setSchoolName('')
+                    setMaxGap('any')
+                    setStateFilter('any')
+                    setNoLoanOnly(false)
+                  }}
+                  className="text-sm text-blue-600 hover:text-blue-800 underline"
+                >
+                  Clear & Start Over
+                </button>
+              </div>
             </div>
 
             {schools.length === 0 && !loading && (
@@ -350,7 +365,7 @@ export default function Home() {
                           )}
                         </div>
                         <p className="text-gray-600">{school.city}, {school.state}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-700">
                           {school.control === 1 ? 'Public' : 'Private'} · {school.size?.toLocaleString()} students
                         </p>
                       </div>
@@ -373,19 +388,19 @@ export default function Home() {
                     {/* Details Row */}
                     <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <span className="text-gray-500">Travel from Poconos:</span>
+                        <span className="text-gray-700">Travel from Poconos:</span>
                         <div className="font-medium">{school.travel_type} · {formatMoney(school.annual_travel_cost)}/yr</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">True Annual Cost:</span>
+                        <span className="text-gray-700">True Annual Cost:</span>
                         <div className="font-bold text-lg">{formatMoney(trueCost)}</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">4-Year Grad Rate:</span>
+                        <span className="text-gray-700">4-Year Grad Rate:</span>
                         <div className="font-medium">{school.grad_rate_4yr ? `${(school.grad_rate_4yr * 100).toFixed(0)}%` : 'N/A'}</div>
                       </div>
                       <div>
-                        <span className="text-gray-500">Pell Grad Rate:</span>
+                        <span className="text-gray-700">Pell Grad Rate:</span>
                         <div className="font-medium">{school.grad_rate_pell ? `${(school.grad_rate_pell * 100).toFixed(0)}%` : 'N/A'}</div>
                       </div>
                     </div>

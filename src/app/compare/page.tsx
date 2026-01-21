@@ -104,7 +104,7 @@ export default function ComparePage() {
   }
 
   const getGapColor = (gap: number | null) => {
-    if (gap === null) return 'text-gray-500'
+    if (gap === null) return 'text-gray-700'
     if (gap < 0) return 'text-green-600'
     if (gap <= 2500) return 'text-green-600'
     if (gap <= 7500) return 'text-yellow-600'
@@ -172,7 +172,7 @@ export default function ComparePage() {
                       className="w-full text-left px-4 py-2 hover:bg-blue-50 border-b last:border-b-0"
                     >
                       <div className="font-medium">{school.name}</div>
-                      <div className="text-sm text-gray-500">{school.city}, {school.state}</div>
+                      <div className="text-sm text-gray-700">{school.city}, {school.state}</div>
                     </button>
                   ))}
                 </div>
@@ -211,7 +211,7 @@ export default function ComparePage() {
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <div className="text-gray-400 text-6xl mb-4">⚖️</div>
             <h2 className="text-xl font-semibold text-gray-700 mb-2">No schools to compare yet</h2>
-            <p className="text-gray-500 mb-4">
+            <p className="text-gray-700 mb-4">
               Search for schools above or add them from the search results page.
             </p>
             <Link
@@ -240,7 +240,7 @@ export default function ComparePage() {
                           <Link href={`/school/${school.id}`} className="font-semibold text-blue-600 hover:underline">
                             {school.name}
                           </Link>
-                          <span className="text-sm text-gray-500">{school.city}, {school.state}</span>
+                          <span className="text-sm text-gray-700">{school.city}, {school.state}</span>
                         </div>
                       </th>
                     ))}
@@ -268,7 +268,7 @@ export default function ComparePage() {
                     {schools.map((school) => (
                       <td key={school.id} className="p-4 text-center">
                         {formatMoney(school.annual_travel_cost)}
-                        <div className="text-xs text-gray-500">{school.travel_type === 'FLY' ? 'Fly' : 'Drive'}</div>
+                        <div className="text-xs text-gray-700">{school.travel_type === 'FLY' ? 'Fly' : 'Drive'}</div>
                       </td>
                     ))}
                   </tr>
@@ -392,7 +392,7 @@ export default function ComparePage() {
           </div>
         )}
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div className="mt-6 text-center text-sm text-gray-700">
           <p>Compare up to 4 schools at once. Costs shown are for the selected income bracket.</p>
         </div>
       </div>

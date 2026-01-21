@@ -216,7 +216,7 @@ export default function SchoolDetail() {
                 <span className="text-gray-700">Published Cost of Attendance</span>
                 <span className="font-semibold">{formatMoney(school.cost_of_attendance)}</span>
               </div>
-              <div className="text-xs text-gray-500 -mt-2 mb-2">
+              <div className="text-xs text-gray-700 -mt-2 mb-2">
                 (Tuition, room & board, books, fees, and living expenses)
               </div>
 
@@ -246,7 +246,7 @@ export default function SchoolDetail() {
             </div>
           </div>
 
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-4 text-sm text-gray-700">
             <p><strong>Important:</strong> The Gap does NOT include loans. Loans are money you must pay back,
             so we don't count them as aid. This number shows what you'd need to cover through savings,
             work-study, or borrowing.</p>
@@ -330,7 +330,7 @@ export default function SchoolDetail() {
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold">{formatPercent(school.grad_rate_pell)}</div>
               <div className="text-sm text-gray-600">Pell Grad Rate</div>
-              <div className="text-xs text-gray-500">(low-income students)</div>
+              <div className="text-xs text-gray-700">(low-income students)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold">{formatMoney(school.median_debt)}</div>
@@ -353,7 +353,7 @@ export default function SchoolDetail() {
             <div>
               <div className="text-sm text-gray-600">Annual Travel Budget</div>
               <div className="text-lg font-medium">{formatMoney(school.annual_travel_cost)}</div>
-              <div className="text-xs text-gray-500">(estimated 5 trips/year)</div>
+              <div className="text-xs text-gray-700">(estimated 5 trips/year)</div>
             </div>
           </div>
         </div>
