@@ -318,7 +318,7 @@ export default function SchoolDetail() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold mb-4">Learn More</h2>
           <div className="flex flex-wrap gap-3">
             {school.npc_url && (
@@ -341,6 +341,94 @@ export default function SchoolDetail() {
                 School Website
               </a>
             )}
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg shadow-md p-6 text-white">
+          <h2 className="text-xl font-bold mb-2">Make This Happen</h2>
+          <p className="text-blue-200 mb-6">
+            Ready to make {school.name} a reality for your family? Here's your action plan:
+          </p>
+
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
+              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">1</div>
+              <div>
+                <h3 className="font-semibold">Get Your Personalized Estimate</h3>
+                <p className="text-blue-200 text-sm mt-1">
+                  Use the school's Net Price Calculator for a more accurate estimate based on your specific situation.
+                  Have your family's tax info ready.
+                </p>
+                {school.npc_url && (
+                  <a
+                    href={school.npc_url.startsWith('http') ? school.npc_url : 'https://' + school.npc_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 bg-white text-blue-900 px-3 py-1 rounded text-sm font-medium hover:bg-blue-100"
+                  >
+                    Open Net Price Calculator →
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
+              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">2</div>
+              <div>
+                <h3 className="font-semibold">File Your FAFSA Early</h3>
+                <p className="text-blue-200 text-sm mt-1">
+                  The Free Application for Federal Student Aid opens October 1st each year. Filing early gives you the best
+                  chance at aid. It's free and required for most financial aid.
+                </p>
+                <a
+                  href="https://studentaid.gov/h/apply-for-aid/fafsa"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 bg-white text-blue-900 px-3 py-1 rounded text-sm font-medium hover:bg-blue-100"
+                >
+                  Go to FAFSA →
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
+              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">3</div>
+              <div>
+                <h3 className="font-semibold">Plan for Your Gap</h3>
+                <p className="text-blue-200 text-sm mt-1">
+                  {currentGap !== null && currentGap <= 0
+                    ? "Great news - this school may cost you nothing or even provide extra funds! Still, having a small savings cushion helps with unexpected expenses."
+                    : `You'll need to cover about ${formatMoney(fourYearTrueCost)} over 4 years. Options include: savings, work-study jobs, payment plans, or carefully considered loans as a last resort.`
+                  }
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
+              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">4</div>
+              <div>
+                <h3 className="font-semibold">Get Free Guidance from The Crown Hub</h3>
+                <p className="text-blue-200 text-sm mt-1">
+                  We're here to help Pocono families navigate the college process. From FAFSA help to application essays,
+                  our team can guide you through every step - at no cost.
+                </p>
+                <a
+                  href="https://thecrownhub.org/contact"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 bg-yellow-400 text-blue-900 px-3 py-1 rounded text-sm font-medium hover:bg-yellow-300"
+                >
+                  Connect with The Crown Hub →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-white/20 text-center">
+            <p className="text-blue-200 text-sm">
+              <strong className="text-white">Remember:</strong> College is an investment in your future.
+              Don't let The Gap discourage you - with the right plan, it's achievable.
+            </p>
           </div>
         </div>
       </div>
