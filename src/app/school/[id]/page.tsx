@@ -10,6 +10,34 @@ export default function SchoolDetail() {
   const [school, setSchool] = useState<School | null>(null)
   const [loading, setLoading] = useState(true)
   const [incomeBracket, setIncomeBracket] = useState('0-30k')
+  const [isInCompare, setIsInCompare] = useState(false)
+
+  useEffect(() => {
+    const stored = localStorage.getItem('compareSchools')
+    if (stored && params.id) {
+      const ids = JSON.parse(stored) as string[]
+      setIsInCompare(ids.includes(params.id as string))
+    }
+  }, [params.id])
+
+  const toggleCompare = () => {
+    const stored = localStorage.getItem('compareSchools')
+    let ids = stored ? JSON.parse(stored) as string[] : []
+    const schoolId = params.id as string
+
+    if (ids.includes(schoolId)) {
+      ids = ids.filter(id => id !== schoolId)
+      setIsInCompare(false)
+    } else {
+      if (ids.length >= 4) {
+        alert('You can compare up to 4 schools at a time')
+        return
+      }
+      ids.push(schoolId)
+      setIsInCompare(true)
+    }
+    localStorage.setItem('compareSchools', JSON.stringify(ids))
+  }
 
   useEffect(() => {
     async function fetchSchool() {
@@ -112,11 +140,23 @@ export default function SchoolDetail() {
                 {school.control === 1 ? 'Public' : 'Private'} - {school.size?.toLocaleString()} students
               </p>
             </div>
-            {school.no_loan_policy && (
-              <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                No-Loan Policy
-              </span>
-            )}
+            <div className="flex flex-col gap-2 items-end">
+              {school.no_loan_policy && (
+                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  No-Loan Policy
+                </span>
+              )}
+              <button
+                onClick={toggleCompare}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  isInCompare
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-white/20 text-white hover:bg-white/30'
+                }`}
+              >
+                {isInCompare ? '✓ In Compare List' : '+ Add to Compare'}
+              </button>
+            </div>
           </div>
         </div>
       </div>

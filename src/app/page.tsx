@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
 
@@ -33,6 +33,29 @@ export default function Home() {
   const [schools, setSchools] = useState<School[]>([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
+  const [compareList, setCompareList] = useState<string[]>([])
+
+  useEffect(() => {
+    const stored = localStorage.getItem('compareSchools')
+    if (stored) {
+      setCompareList(JSON.parse(stored))
+    }
+  }, [])
+
+  const toggleCompare = (schoolId: string) => {
+    let newList: string[]
+    if (compareList.includes(schoolId)) {
+      newList = compareList.filter(id => id !== schoolId)
+    } else {
+      if (compareList.length >= 4) {
+        alert('You can compare up to 4 schools at a time')
+        return
+      }
+      newList = [...compareList, schoolId]
+    }
+    setCompareList(newList)
+    localStorage.setItem('compareSchools', JSON.stringify(newList))
+  }
 
   const gapColumn: Record<string, string> = {
     '0-30k': 'gap_0_30k',
@@ -355,6 +378,16 @@ export default function Home() {
                       >
                         View Full Details →
                       </Link>
+                      <button
+                        onClick={() => toggleCompare(school.id)}
+                        className={`text-sm px-3 py-1 rounded ${
+                          compareList.includes(school.id)
+                            ? 'bg-green-600 text-white hover:bg-green-700'
+                            : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                        }`}
+                      >
+                        {compareList.includes(school.id) ? '✓ In Compare List' : '+ Add to Compare'}
+                      </button>
                       {school.npc_url && (
                         <a
                           href={school.npc_url.startsWith('http') ? school.npc_url : `https://${school.npc_url}`}
@@ -384,8 +417,39 @@ export default function Home() {
         )}
       </div>
 
+      {/* Compare Bar */}
+      {compareList.length > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 bg-purple-900 text-white py-3 px-4 shadow-lg z-50">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="bg-purple-700 px-3 py-1 rounded-full font-bold">
+                {compareList.length}
+              </span>
+              <span>school{compareList.length !== 1 ? 's' : ''} selected for comparison</span>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setCompareList([])
+                  localStorage.setItem('compareSchools', JSON.stringify([]))
+                }}
+                className="text-purple-200 hover:text-white text-sm underline"
+              >
+                Clear All
+              </button>
+              <Link
+                href="/compare"
+                className="bg-white text-purple-900 px-4 py-2 rounded-md font-semibold hover:bg-purple-100"
+              >
+                Compare Now →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
-      <footer className="bg-gray-800 text-gray-400 py-8 px-4 mt-12">
+      <footer className={`bg-gray-800 text-gray-400 py-8 px-4 mt-12 ${compareList.length > 0 ? 'pb-24' : ''}`}>
         <div className="max-w-6xl mx-auto text-center text-sm">
           <p>A tool by <strong className="text-white">The Crown Hub</strong> to help Pocono families find affordable colleges.</p>
           <p className="mt-2">Data from U.S. Department of Education College Scorecard. Updated annually.</p>
