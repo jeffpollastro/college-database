@@ -1,11 +1,34 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
+
+const US_STATES = [
+  { code: 'any', name: 'All States' },
+  { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' },
+  { code: 'AR', name: 'Arkansas' }, { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' },
+  { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' }, { code: 'FL', name: 'Florida' },
+  { code: 'GA', name: 'Georgia' }, { code: 'HI', name: 'Hawaii' }, { code: 'ID', name: 'Idaho' },
+  { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' }, { code: 'IA', name: 'Iowa' },
+  { code: 'KS', name: 'Kansas' }, { code: 'KY', name: 'Kentucky' }, { code: 'LA', name: 'Louisiana' },
+  { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' }, { code: 'MA', name: 'Massachusetts' },
+  { code: 'MI', name: 'Michigan' }, { code: 'MN', name: 'Minnesota' }, { code: 'MS', name: 'Mississippi' },
+  { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' }, { code: 'NE', name: 'Nebraska' },
+  { code: 'NV', name: 'Nevada' }, { code: 'NH', name: 'New Hampshire' }, { code: 'NJ', name: 'New Jersey' },
+  { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' }, { code: 'NC', name: 'North Carolina' },
+  { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' }, { code: 'OK', name: 'Oklahoma' },
+  { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' }, { code: 'RI', name: 'Rhode Island' },
+  { code: 'SC', name: 'South Carolina' }, { code: 'SD', name: 'South Dakota' }, { code: 'TN', name: 'Tennessee' },
+  { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' }, { code: 'VT', name: 'Vermont' },
+  { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' }, { code: 'WV', name: 'West Virginia' },
+  { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }, { code: 'DC', name: 'Washington DC' },
+]
 
 export default function Home() {
   const [incomeBracket, setIncomeBracket] = useState('0-30k')
   const [maxGap, setMaxGap] = useState<string>('any')
+  const [stateFilter, setStateFilter] = useState<string>('any')
   const [noLoanOnly, setNoLoanOnly] = useState(false)
   const [schools, setSchools] = useState<School[]>([])
   const [loading, setLoading] = useState(false)
@@ -40,6 +63,10 @@ export default function Home() {
       query = query.eq('no_loan_policy', true)
     }
 
+    if (stateFilter !== 'any') {
+      query = query.eq('state', stateFilter)
+    }
+
     const { data, error } = await query
 
     if (error) {
@@ -63,7 +90,11 @@ export default function Home() {
     return gaps[incomeBracket]
   }
 
-  const getSeverityColor = (severity: string | null) => {
+  const getSeverityColor = (severity: string | null, gap: number | null) => {
+    // Negative gap = money back, always green
+    if (gap !== null && gap < 0) {
+      return 'bg-green-100 text-green-800 border-green-300'
+    }
     switch (severity) {
       case 'low': return 'bg-green-100 text-green-800 border-green-300'
       case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-300'
@@ -76,6 +107,63 @@ export default function Home() {
   const formatMoney = (amount: number | null) => {
     if (amount === null || amount === undefined) return 'N/A'
     return '$' + amount.toLocaleString()
+  }
+
+  const getPlainLanguageSummary = (school: School, gap: number | null): string => {
+    const parts: string[] = []
+
+    // Cost assessment
+    if (gap !== null && gap < 0) {
+      // Negative gap = student receives money back
+      parts.push(`Students at your income level typically receive MORE aid than the cost of attendance - you could get about ${formatMoney(Math.abs(gap))} back per year for living expenses.`)
+    } else if (gap === 0 || (gap === null && school.no_loan_policy)) {
+      parts.push(`This school is essentially free for your family's income level.`)
+    } else if (gap !== null && gap <= 2500) {
+      parts.push(`Very affordable - your family would only need to cover about ${formatMoney(gap)} per year.`)
+    } else if (gap !== null && gap <= 7500) {
+      parts.push(`Moderately affordable at ${formatMoney(gap)} per year, but plan carefully for this cost.`)
+    } else if (gap !== null && gap <= 15000) {
+      parts.push(`Significant cost - your family would need to find ${formatMoney(gap)} per year through savings or loans.`)
+    } else if (gap !== null) {
+      parts.push(`Warning: This school would require ${formatMoney(gap)} per year out of pocket - this level of cost leads many students to drop out.`)
+    }
+
+    // No-loan policy highlight
+    if (school.no_loan_policy) {
+      parts.push(`They have a no-loan policy, meaning financial aid comes as grants you don't repay.`)
+    }
+
+    // Graduation rate assessment
+    const gradRate = school.grad_rate_4yr ? school.grad_rate_4yr * 100 : null
+    const pellRate = school.grad_rate_pell ? school.grad_rate_pell * 100 : null
+
+    if (gradRate !== null && pellRate !== null) {
+      const gap_diff = gradRate - pellRate
+      if (pellRate >= 80) {
+        parts.push(`${pellRate.toFixed(0)}% of low-income students graduate in 4 years - excellent support for students like yours.`)
+      } else if (pellRate >= 60) {
+        parts.push(`${pellRate.toFixed(0)}% of low-income students graduate in 4 years - decent but not exceptional.`)
+      } else if (pellRate >= 40) {
+        parts.push(`Only ${pellRate.toFixed(0)}% of low-income students graduate in 4 years - a warning sign.`)
+      } else if (pellRate > 0) {
+        parts.push(`Caution: Only ${pellRate.toFixed(0)}% of low-income students graduate here - most don't finish.`)
+      }
+
+      if (gap_diff > 15) {
+        parts.push(`Low-income students graduate at a much lower rate than wealthy students here (${gap_diff.toFixed(0)}% gap).`)
+      }
+    }
+
+    // Travel context
+    if (school.travel_type === 'FLY' && school.annual_travel_cost) {
+      if (gap !== null && gap < 0) {
+        parts.push(`Note: You would need to budget ${formatMoney(school.annual_travel_cost)}/year for travel, but the excess aid could help cover this.`)
+      } else if (gap === 0 || (gap !== null && gap < 3000)) {
+        parts.push(`Even with ${formatMoney(school.annual_travel_cost)}/year in travel costs, this is still a great deal.`)
+      }
+    }
+
+    return parts.join(' ')
   }
 
   return (
@@ -93,7 +181,7 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4">Find Affordable Colleges</h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
             {/* Income Bracket */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -129,6 +217,24 @@ export default function Home() {
                 <option value="7500">Under $7,500/year</option>
                 <option value="10000">Under $10,000/year</option>
                 <option value="15000">Under $15,000/year</option>
+              </select>
+            </div>
+
+            {/* State Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                State
+              </label>
+              <select
+                value={stateFilter}
+                onChange={(e) => setStateFilter(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {US_STATES.map((state) => (
+                  <option key={state.code} value={state.code}>
+                    {state.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -207,10 +313,18 @@ export default function Home() {
                       </div>
 
                       {/* Gap Display */}
-                      <div className={`text-center px-6 py-3 rounded-lg border-2 ${getSeverityColor(school.gap_severity)}`}>
-                        <div className="text-2xl font-bold">{formatMoney(gap)}</div>
-                        <div className="text-sm">The Gap / year</div>
+                      <div className={`text-center px-6 py-3 rounded-lg border-2 ${getSeverityColor(school.gap_severity, gap)}`}>
+                        <div className="text-2xl font-bold">
+                          {gap !== null && gap < 0 ? `+${formatMoney(Math.abs(gap))}` : formatMoney(gap)}
+                        </div>
+                        <div className="text-sm">{gap !== null && gap < 0 ? 'Money Back / year' : 'The Gap / year'}</div>
                       </div>
+                    </div>
+
+                    {/* Plain Language Summary */}
+                    <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-700 leading-relaxed">
+                      <span className="font-medium text-gray-900">What this means: </span>
+                      {getPlainLanguageSummary(school, gap)}
                     </div>
 
                     {/* Details Row */}
@@ -234,7 +348,13 @@ export default function Home() {
                     </div>
 
                     {/* Action Row */}
-                    <div className="mt-4 flex gap-2">
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Link
+                        href={`/school/${school.id}`}
+                        className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                      >
+                        View Full Details →
+                      </Link>
                       {school.npc_url && (
                         <a
                           href={school.npc_url.startsWith('http') ? school.npc_url : `https://${school.npc_url}`}
