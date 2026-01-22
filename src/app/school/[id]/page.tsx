@@ -114,7 +114,7 @@ export default function SchoolDetail() {
       <main className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">School Not Found</h1>
-          <Link href="/" className="text-blue-600 hover:underline">Back to Search</Link>
+          <Link href="/" className="text-[#CF7A3C] hover:underline">Back to Search</Link>
         </div>
       </main>
     )
@@ -126,17 +126,26 @@ export default function SchoolDetail() {
   const fourYearTrueCost = trueCost * 4
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="bg-blue-900 text-white py-8 px-4">
+    <main className="min-h-screen bg-[#F5F0E6]">
+      <div className="bg-[#3D3530]">
+        <div className="max-w-4xl mx-auto px-4 py-2">
+          <img
+            src="/banner_header.png"
+            alt="The Crown Hub"
+            className="w-full max-h-24 object-contain object-left"
+          />
+        </div>
+      </div>
+      <div className="bg-[#CF7A3C] text-white py-6 px-4">
         <div className="max-w-4xl mx-auto">
-          <Link href="/" className="text-blue-200 hover:text-white text-sm mb-4 inline-block">
-            Back to Search
+          <Link href="/" className="text-white/80 hover:text-white text-sm mb-4 inline-block">
+            ← Back to Search
           </Link>
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-2">{school.name}</h1>
-              <p className="text-blue-200">{school.city}, {school.state}</p>
-              <p className="text-blue-300 text-sm mt-1">
+              <p className="text-white/90">{school.city}, {school.state}</p>
+              <p className="text-white/80 text-sm mt-1">
                 {school.control === 1 ? 'Public' : 'Private'} - {school.size?.toLocaleString()} students
               </p>
             </div>
@@ -150,7 +159,7 @@ export default function SchoolDetail() {
                 onClick={toggleCompare}
                 className={`px-3 py-1 rounded-full text-sm font-medium ${
                   isInCompare
-                    ? 'bg-purple-500 text-white'
+                    ? 'bg-[#5FBBC4] text-white'
                     : 'bg-white/20 text-white hover:bg-white/30'
                 }`}
               >
@@ -169,7 +178,7 @@ export default function SchoolDetail() {
           <select
             value={incomeBracket}
             onChange={(e) => setIncomeBracket(e.target.value)}
-            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
           >
             <option value="0-30k">$0 - $30,000</option>
             <option value="30-48k">$30,001 - $48,000</option>
@@ -269,9 +278,9 @@ export default function SchoolDetail() {
               <div className="text-sm text-gray-600">4-Year Travel</div>
               <div className="text-2xl font-bold">{formatMoney((school.annual_travel_cost || 0) * 4)}</div>
             </div>
-            <div className="bg-blue-50 rounded-lg p-3">
-              <div className="text-sm text-blue-600">4-Year True Cost</div>
-              <div className="text-2xl font-bold text-blue-900">{formatMoney(fourYearTrueCost)}</div>
+            <div className="bg-[#CF7A3C]/10 rounded-lg p-3">
+              <div className="text-sm text-[#CF7A3C]">4-Year True Cost</div>
+              <div className="text-2xl font-bold text-[#3D3530]">{formatMoney(fourYearTrueCost)}</div>
             </div>
           </div>
         </div>
@@ -298,7 +307,7 @@ export default function SchoolDetail() {
                   const gap = getGapForBracket(bracket)
                   const isSelected = bracket === incomeBracket
                   return (
-                    <tr key={bracket} className={'border-b ' + (isSelected ? 'bg-blue-50 font-medium' : '')}>
+                    <tr key={bracket} className={'border-b ' + (isSelected ? 'bg-[#CF7A3C]/10 font-medium' : '')}>
                       <td className="py-2">{label}</td>
                       <td className="text-right py-2">
                         {gap !== null && gap < 0 
@@ -366,7 +375,7 @@ export default function SchoolDetail() {
                 href={school.npc_url.startsWith('http') ? school.npc_url : 'https://' + school.npc_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                className="bg-[#CF7A3C] text-white px-4 py-2 rounded-md hover:bg-[#B86A2F]"
               >
                 Net Price Calculator
               </a>
@@ -384,18 +393,18 @@ export default function SchoolDetail() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg shadow-md p-6 text-white">
+        <div className="bg-gradient-to-r from-[#3D3530] to-[#4D4540] rounded-lg shadow-md p-6 text-white">
           <h2 className="text-xl font-bold mb-2">Make This Happen</h2>
-          <p className="text-blue-200 mb-6">
+          <p className="text-white/80 mb-6">
             Ready to make {school.name} a reality for your family? Here's your action plan:
           </p>
 
           <div className="space-y-4">
             <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
-              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">1</div>
+              <div className="bg-[#CF7A3C] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">1</div>
               <div>
                 <h3 className="font-semibold">Get Your Personalized Estimate</h3>
-                <p className="text-blue-200 text-sm mt-1">
+                <p className="text-white/80 text-sm mt-1">
                   Use the school's Net Price Calculator for a more accurate estimate based on your specific situation.
                   Have your family's tax info ready.
                 </p>
@@ -404,7 +413,7 @@ export default function SchoolDetail() {
                     href={school.npc_url.startsWith('http') ? school.npc_url : 'https://' + school.npc_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block mt-2 bg-white text-blue-900 px-3 py-1 rounded text-sm font-medium hover:bg-blue-100"
+                    className="inline-block mt-2 bg-[#CF7A3C] text-white px-3 py-1 rounded text-sm font-medium hover:bg-[#B86A2F]"
                   >
                     Open Net Price Calculator →
                   </a>
@@ -413,10 +422,10 @@ export default function SchoolDetail() {
             </div>
 
             <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
-              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">2</div>
+              <div className="bg-[#CF7A3C] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">2</div>
               <div>
                 <h3 className="font-semibold">File Your FAFSA Early</h3>
-                <p className="text-blue-200 text-sm mt-1">
+                <p className="text-white/80 text-sm mt-1">
                   The Free Application for Federal Student Aid opens October 1st each year. Filing early gives you the best
                   chance at aid. It's free and required for most financial aid.
                 </p>
@@ -424,7 +433,7 @@ export default function SchoolDetail() {
                   href="https://studentaid.gov/h/apply-for-aid/fafsa"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block mt-2 bg-white text-blue-900 px-3 py-1 rounded text-sm font-medium hover:bg-blue-100"
+                  className="inline-block mt-2 bg-[#CF7A3C] text-white px-3 py-1 rounded text-sm font-medium hover:bg-[#B86A2F]"
                 >
                   Go to FAFSA →
                 </a>
@@ -432,10 +441,10 @@ export default function SchoolDetail() {
             </div>
 
             <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
-              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">3</div>
+              <div className="bg-[#CF7A3C] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">3</div>
               <div>
                 <h3 className="font-semibold">Plan for Your Gap</h3>
-                <p className="text-blue-200 text-sm mt-1">
+                <p className="text-white/80 text-sm mt-1">
                   {currentGap !== null && currentGap <= 0
                     ? "Great news - this school may cost you nothing or even provide extra funds! Still, having a small savings cushion helps with unexpected expenses."
                     : `You'll need to cover about ${formatMoney(fourYearTrueCost)} over 4 years. Options include: savings, work-study jobs, payment plans, or carefully considered loans as a last resort.`
@@ -445,10 +454,10 @@ export default function SchoolDetail() {
             </div>
 
             <div className="flex items-start gap-4 bg-white/10 rounded-lg p-4">
-              <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">4</div>
+              <div className="bg-[#CF7A3C] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">4</div>
               <div>
                 <h3 className="font-semibold">Get Free Guidance from The Crown Hub</h3>
-                <p className="text-blue-200 text-sm mt-1">
+                <p className="text-white/80 text-sm mt-1">
                   We're here to help Pocono families navigate the college process. From FAFSA help to application essays,
                   our team can guide you through every step - at no cost.
                 </p>
@@ -456,7 +465,7 @@ export default function SchoolDetail() {
                   href="https://thecrownhub.org/contact"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block mt-2 bg-yellow-400 text-blue-900 px-3 py-1 rounded text-sm font-medium hover:bg-yellow-300"
+                  className="inline-block mt-2 bg-[#5FBBC4] text-white px-3 py-1 rounded text-sm font-medium hover:bg-[#4AA8B1]"
                 >
                   Connect with The Crown Hub →
                 </a>
@@ -465,7 +474,7 @@ export default function SchoolDetail() {
           </div>
 
           <div className="mt-6 pt-4 border-t border-white/20 text-center">
-            <p className="text-blue-200 text-sm">
+            <p className="text-white/80 text-sm">
               <strong className="text-white">Remember:</strong> College is an investment in your future.
               Don't let The Gap discourage you - with the right plan, it's achievable.
             </p>
@@ -473,7 +482,7 @@ export default function SchoolDetail() {
         </div>
       </div>
 
-      <footer className="bg-gray-800 text-gray-400 py-8 px-4 mt-12">
+      <footer className="bg-[#3D3530] text-[#F5F0E6]/70 py-8 px-4 mt-12">
         <div className="max-w-4xl mx-auto text-center text-sm">
           <p>A tool by <strong className="text-white">The Crown Hub</strong> to help Pocono families find affordable colleges.</p>
           <p className="mt-2">Data from U.S. Department of Education College Scorecard. Updated annually.</p>

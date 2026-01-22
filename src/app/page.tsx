@@ -195,12 +195,21 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-[#F5F0E6]">
       {/* Header */}
-      <div className="bg-blue-900 text-white py-8 px-4">
+      <div className="bg-[#3D3530]">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2">The Crown Hub College Search</h1>
-          <p className="text-blue-200">Find colleges that are truly affordable for your family</p>
+          <img
+            src="/banner_header.png"
+            alt="The Crown Hub"
+            className="w-full max-h-32 object-contain object-left py-2"
+          />
+        </div>
+        <div className="bg-[#CF7A3C] py-3 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-2xl font-bold text-white">College Search</h1>
+            <p className="text-white/90 text-sm">Find colleges that are truly affordable for your family</p>
+          </div>
         </div>
       </div>
 
@@ -218,7 +227,7 @@ export default function Home() {
               <select
                 value={incomeBracket}
                 onChange={(e) => setIncomeBracket(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
               >
                 <option value="0-30k">$0 - $30,000</option>
                 <option value="30-48k">$30,001 - $48,000</option>
@@ -236,7 +245,7 @@ export default function Home() {
               <select
                 value={maxGap}
                 onChange={(e) => setMaxGap(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
               >
                 <option value="any">Show All</option>
                 <option value="0">$0 (Free!)</option>
@@ -256,7 +265,7 @@ export default function Home() {
               <select
                 value={stateFilter}
                 onChange={(e) => setStateFilter(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
               >
                 {US_STATES.map((state) => (
                   <option key={state.code} value={state.code}>
@@ -273,7 +282,7 @@ export default function Home() {
                   type="checkbox"
                   checked={noLoanOnly}
                   onChange={(e) => setNoLoanOnly(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-[#CF7A3C]"
                 />
                 <span className="text-sm text-gray-700">No-loan policy only</span>
               </label>
@@ -284,7 +293,7 @@ export default function Home() {
               <button
                 onClick={searchSchools}
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-400 transition-colors"
+                className="w-full bg-[#CF7A3C] text-white py-2 px-4 rounded-md hover:bg-[#B86A2F] disabled:bg-[#D9A97A] transition-colors"
               >
                 {loading ? 'Searching...' : 'Search Schools'}
               </button>
@@ -302,13 +311,13 @@ export default function Home() {
               onChange={(e) => setSchoolName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && searchSchools()}
               placeholder="e.g., Hunter College, Penn State, UCLA..."
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
             />
           </div>
 
           {/* Info Box */}
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-4 text-sm text-blue-800">
-            <strong>What is "The Gap"?</strong> It's the amount your family would need to pay or borrow each year after all grants and scholarships. 
+          <div className="bg-[#5FBBC4]/10 border border-[#5FBBC4] rounded-md p-4 text-sm text-[#3D3530]">
+            <strong>What is "The Gap"?</strong> It's the amount your family would need to pay or borrow each year after all grants and scholarships.
             Schools with <span className="text-green-700 font-semibold">$0 gap</span> are truly free for your income level.
           </div>
         </div>
@@ -333,7 +342,7 @@ export default function Home() {
                     setStateFilter('any')
                     setNoLoanOnly(false)
                   }}
-                  className="text-sm text-blue-600 hover:text-blue-800 underline"
+                  className="text-sm text-[#CF7A3C] hover:text-[#B86A2F] underline"
                 >
                   Clear & Start Over
                 </button>
@@ -380,7 +389,7 @@ export default function Home() {
                     </div>
 
                     {/* Plain Language Summary */}
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-700 leading-relaxed">
+                    <div className="mt-4 p-4 bg-[#F5F0E6] rounded-lg text-sm text-[#3D3530] leading-relaxed">
                       <span className="font-medium text-gray-900">What this means: </span>
                       {getPlainLanguageSummary(school, gap)}
                     </div>
@@ -409,7 +418,7 @@ export default function Home() {
                     <div className="mt-4 flex flex-wrap gap-2">
                       <Link
                         href={`/school/${school.id}`}
-                        className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                        className="text-sm bg-[#CF7A3C] text-white px-3 py-1 rounded hover:bg-[#B86A2F]"
                       >
                         View Full Details →
                       </Link>
@@ -417,8 +426,8 @@ export default function Home() {
                         onClick={() => toggleCompare(school.id)}
                         className={`text-sm px-3 py-1 rounded ${
                           compareList.includes(school.id)
-                            ? 'bg-green-600 text-white hover:bg-green-700'
-                            : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                            ? 'bg-[#5FBBC4] text-white hover:bg-[#4AA8B1]'
+                            : 'bg-[#6B4380]/10 text-[#6B4380] hover:bg-[#6B4380]/20'
                         }`}
                       >
                         {compareList.includes(school.id) ? '✓ In Compare List' : '+ Add to Compare'}
@@ -428,7 +437,7 @@ export default function Home() {
                           href={school.npc_url.startsWith('http') ? school.npc_url : `https://${school.npc_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200"
+                          className="text-sm bg-[#CF7A3C]/10 text-[#CF7A3C] px-3 py-1 rounded hover:bg-[#CF7A3C]/20"
                         >
                           Net Price Calculator →
                         </a>
@@ -438,7 +447,7 @@ export default function Home() {
                           href={school.website_url.startsWith('http') ? school.website_url : `https://${school.website_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200"
+                          className="text-sm bg-[#3D3530]/10 text-[#3D3530] px-3 py-1 rounded hover:bg-[#3D3530]/20"
                         >
                           School Website →
                         </a>
@@ -454,10 +463,10 @@ export default function Home() {
 
       {/* Compare Bar */}
       {compareList.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-purple-900 text-white py-3 px-4 shadow-lg z-50">
+        <div className="fixed bottom-0 left-0 right-0 bg-[#6B4380] text-white py-3 px-4 shadow-lg z-50">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="bg-purple-700 px-3 py-1 rounded-full font-bold">
+              <span className="bg-[#5A3770] px-3 py-1 rounded-full font-bold">
                 {compareList.length}
               </span>
               <span>school{compareList.length !== 1 ? 's' : ''} selected for comparison</span>
@@ -468,13 +477,13 @@ export default function Home() {
                   setCompareList([])
                   localStorage.setItem('compareSchools', JSON.stringify([]))
                 }}
-                className="text-purple-200 hover:text-white text-sm underline"
+                className="text-white/70 hover:text-white text-sm underline"
               >
                 Clear All
               </button>
               <Link
                 href="/compare"
-                className="bg-white text-purple-900 px-4 py-2 rounded-md font-semibold hover:bg-purple-100"
+                className="bg-[#CF7A3C] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#B86A2F]"
               >
                 Compare Now →
               </Link>
@@ -484,7 +493,7 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className={`bg-gray-800 text-gray-400 py-8 px-4 mt-12 ${compareList.length > 0 ? 'pb-24' : ''}`}>
+      <footer className={`bg-[#3D3530] text-[#F5F0E6]/70 py-8 px-4 mt-12 ${compareList.length > 0 ? 'pb-24' : ''}`}>
         <div className="max-w-6xl mx-auto text-center text-sm">
           <p>A tool by <strong className="text-white">The Crown Hub</strong> to help Pocono families find affordable colleges.</p>
           <p className="mt-2">Data from U.S. Department of Education College Scorecard. Updated annually.</p>

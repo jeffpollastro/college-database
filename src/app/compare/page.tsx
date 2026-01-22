@@ -120,21 +120,30 @@ export default function ComparePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading comparison...</div>
+      <main className="min-h-screen bg-[#F5F0E6] flex items-center justify-center">
+        <div className="text-[#3D3530]">Loading comparison...</div>
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="bg-blue-900 text-white py-8 px-4">
+    <main className="min-h-screen bg-[#F5F0E6]">
+      <div className="bg-[#3D3530]">
+        <div className="max-w-6xl mx-auto px-4 py-2">
+          <img
+            src="/banner_header.png"
+            alt="The Crown Hub"
+            className="w-full max-h-24 object-contain object-left"
+          />
+        </div>
+      </div>
+      <div className="bg-[#CF7A3C] text-white py-6 px-4">
         <div className="max-w-6xl mx-auto">
-          <Link href="/" className="text-blue-200 hover:text-white text-sm mb-4 inline-block">
+          <Link href="/" className="text-white/80 hover:text-white text-sm mb-4 inline-block">
             ← Back to Search
           </Link>
           <h1 className="text-3xl font-bold">Compare Schools</h1>
-          <p className="text-blue-200 mt-2">See how your options stack up side-by-side</p>
+          <p className="text-white/90 mt-2">See how your options stack up side-by-side</p>
         </div>
       </div>
 
@@ -152,12 +161,12 @@ export default function ComparePage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && searchSchools()}
                   placeholder="Search by school name..."
-                  className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
                 />
                 <button
                   onClick={searchSchools}
                   disabled={searching}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                  className="bg-[#CF7A3C] text-white px-4 py-2 rounded-md hover:bg-[#B86A2F] disabled:opacity-50"
                 >
                   {searching ? 'Searching...' : 'Search'}
                 </button>
@@ -169,7 +178,7 @@ export default function ComparePage() {
                     <button
                       key={school.id}
                       onClick={() => addSchool(school)}
-                      className="w-full text-left px-4 py-2 hover:bg-blue-50 border-b last:border-b-0"
+                      className="w-full text-left px-4 py-2 hover:bg-[#CF7A3C]/10 border-b last:border-b-0"
                     >
                       <div className="font-medium">{school.name}</div>
                       <div className="text-sm text-gray-700">{school.city}, {school.state}</div>
@@ -186,7 +195,7 @@ export default function ComparePage() {
               <select
                 value={incomeBracket}
                 onChange={(e) => setIncomeBracket(e.target.value)}
-                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
               >
                 <option value="0-30k">$0 - $30,000</option>
                 <option value="30-48k">$30,001 - $48,000</option>
@@ -216,7 +225,7 @@ export default function ComparePage() {
             </p>
             <Link
               href="/"
-              className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+              className="inline-block bg-[#CF7A3C] text-white px-6 py-2 rounded-md hover:bg-[#B86A2F]"
             >
               Find Schools to Compare
             </Link>
@@ -237,7 +246,7 @@ export default function ComparePage() {
                           >
                             ✕ Remove
                           </button>
-                          <Link href={`/school/${school.id}`} className="font-semibold text-blue-600 hover:underline">
+                          <Link href={`/school/${school.id}`} className="font-semibold text-[#CF7A3C] hover:underline">
                             {school.name}
                           </Link>
                           <span className="text-sm text-gray-700">{school.city}, {school.state}</span>
@@ -247,7 +256,7 @@ export default function ComparePage() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b bg-blue-50">
+                  <tr className="border-b bg-[#CF7A3C]/10">
                     <td className="p-4 font-medium">Your Gap (Annual)</td>
                     {schools.map((school) => {
                       const gap = getGapForBracket(school)
@@ -272,7 +281,7 @@ export default function ComparePage() {
                       </td>
                     ))}
                   </tr>
-                  <tr className="border-b bg-blue-50">
+                  <tr className="border-b bg-[#CF7A3C]/10">
                     <td className="p-4 font-medium">= True Annual Cost</td>
                     {schools.map((school) => {
                       const gap = getGapForBracket(school)
@@ -397,7 +406,7 @@ export default function ComparePage() {
         </div>
       </div>
 
-      <footer className="bg-gray-800 text-gray-400 py-8 px-4 mt-12">
+      <footer className="bg-[#3D3530] text-[#F5F0E6]/70 py-8 px-4 mt-12">
         <div className="max-w-6xl mx-auto text-center text-sm">
           <p>A tool by <strong className="text-white">The Crown Hub</strong> to help Pocono families find affordable colleges.</p>
           <p className="mt-2">Data from U.S. Department of Education College Scorecard. Updated annually.</p>
