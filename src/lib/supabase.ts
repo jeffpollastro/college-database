@@ -32,4 +32,11 @@ export type School = {
   grad_rate_pell: number
   median_debt: number
   median_earnings_10yr: number
+  admission_rate: number
+  sat_read_25: number
+  sat_read_75: number
+  sat_math_25: number
+  sat_math_75: number
+  act_25: number
+  act_75: number
 }

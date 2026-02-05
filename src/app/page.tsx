@@ -395,14 +395,22 @@ export default function Home() {
                     </div>
 
                     {/* Details Row */}
-                    <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm">
                       <div>
                         <span className="text-gray-700">Travel from Poconos:</span>
-                        <div className="font-medium">{school.travel_type} · {formatMoney(school.annual_travel_cost)}/yr</div>
+                        <div className="font-medium">{school.travel_type === 'FLY' ? 'Fly' : 'Drive'} · {formatMoney(school.annual_travel_cost)}/yr</div>
                       </div>
                       <div>
                         <span className="text-gray-700">True Annual Cost:</span>
                         <div className="font-bold text-lg">{formatMoney(trueCost)}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-700">Admission Rate:</span>
+                        <div className="font-medium">{school.admission_rate ? `${(school.admission_rate * 100).toFixed(0)}%` : 'N/A'}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-700">SAT Range:</span>
+                        <div className="font-medium">{school.sat_read_25 && school.sat_math_25 ? `${school.sat_read_25 + school.sat_math_25}-${school.sat_read_75 + school.sat_math_75}` : 'N/A'}</div>
                       </div>
                       <div>
                         <span className="text-gray-700">4-Year Grad Rate:</span>

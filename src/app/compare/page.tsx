@@ -338,6 +338,38 @@ export default function ComparePage() {
 
                   <tr className="border-b bg-gray-50">
                     <td colSpan={schools.length + 1} className="p-4 font-semibold text-gray-700">
+                      Admissions
+                    </td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">Admission Rate</td>
+                    {schools.map((school) => (
+                      <td key={school.id} className="p-4 text-center">
+                        {school.admission_rate ? `${(school.admission_rate * 100).toFixed(0)}%` : 'N/A'}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">SAT Range</td>
+                    {schools.map((school) => (
+                      <td key={school.id} className="p-4 text-center">
+                        {school.sat_read_25 && school.sat_math_25
+                          ? `${school.sat_read_25 + school.sat_math_25} - ${school.sat_read_75 + school.sat_math_75}`
+                          : 'N/A'}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="border-b">
+                    <td className="p-4 font-medium">ACT Range</td>
+                    {schools.map((school) => (
+                      <td key={school.id} className="p-4 text-center">
+                        {school.act_25 ? `${school.act_25} - ${school.act_75}` : 'N/A'}
+                      </td>
+                    ))}
+                  </tr>
+
+                  <tr className="border-b bg-gray-50">
+                    <td colSpan={schools.length + 1} className="p-4 font-semibold text-gray-700">
                       Student Outcomes
                     </td>
                   </tr>

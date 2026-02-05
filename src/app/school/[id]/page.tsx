@@ -330,6 +330,41 @@ export default function SchoolDetail() {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h2 className="text-lg font-semibold mb-4">Admissions</h2>
+          {school.admission_rate || school.sat_read_25 || school.act_25 ? (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+                {school.admission_rate && (
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-2xl font-bold">{(school.admission_rate * 100).toFixed(0)}%</div>
+                    <div className="text-sm text-gray-600">Admission Rate</div>
+                  </div>
+                )}
+                {school.sat_read_25 && school.sat_math_25 && (
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-2xl font-bold">
+                      {school.sat_read_25 + school.sat_math_25} - {school.sat_read_75 + school.sat_math_75}
+                    </div>
+                    <div className="text-sm text-gray-600">SAT Range (middle 50%)</div>
+                  </div>
+                )}
+                {school.act_25 && (
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-2xl font-bold">{school.act_25} - {school.act_75}</div>
+                    <div className="text-sm text-gray-600">ACT Range (middle 50%)</div>
+                  </div>
+                )}
+              </div>
+              <div className="text-xs text-gray-700">
+                <p>"Middle 50%" means 25% of admitted students scored below this range and 25% scored above it. Being below the range does not mean automatic rejection.</p>
+              </div>
+            </>
+          ) : (
+            <p className="text-gray-600 text-sm">Admission data not reported. This school may have open enrollment or test-optional admissions.</p>
+          )}
+        </div>
+
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold mb-4">Student Outcomes</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
