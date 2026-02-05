@@ -331,7 +331,7 @@ export default function Home() {
               </h2>
               <div className="flex items-center gap-4">
                 {schools.length > 0 && (
-                  <span className="text-sm text-gray-600">Sorted by lowest gap first</span>
+                  <span className="text-sm text-gray-700">Sorted by lowest gap first</span>
                 )}
                 <button
                   onClick={() => {
@@ -350,7 +350,7 @@ export default function Home() {
             </div>
 
             {schools.length === 0 && !loading && (
-              <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-600">
+              <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-700">
                 <p>No schools match your criteria. Try adjusting your filters.</p>
               </div>
             )}
@@ -373,7 +373,7 @@ export default function Home() {
                             </span>
                           )}
                         </div>
-                        <p className="text-gray-600">{school.city}, {school.state}</p>
+                        <p className="text-gray-700">{school.city}, {school.state}</p>
                         <p className="text-sm text-gray-700">
                           {school.control === 1 ? 'Public' : 'Private'} · {school.size?.toLocaleString()} students
                         </p>

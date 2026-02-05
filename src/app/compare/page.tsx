@@ -218,7 +218,7 @@ export default function ComparePage() {
 
         {schools.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <div className="text-gray-400 text-6xl mb-4">⚖️</div>
+            <div className="text-gray-700 text-6xl mb-4">⚖️</div>
             <h2 className="text-xl font-semibold text-gray-700 mb-2">No schools to compare yet</h2>
             <p className="text-gray-700 mb-4">
               Search for schools above or add them from the search results page.
@@ -330,7 +330,7 @@ export default function ComparePage() {
                         {school.no_loan_policy ? (
                           <span className="text-green-600 font-medium">Yes</span>
                         ) : (
-                          <span className="text-gray-400">No</span>
+                          <span className="text-gray-700">No</span>
                         )}
                       </td>
                     ))}

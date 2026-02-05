@@ -104,7 +104,7 @@ export default function SchoolDetail() {
   if (loading) {
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading school details...</div>
+        <div className="text-gray-700">Loading school details...</div>
       </main>
     )
   }
@@ -190,7 +190,7 @@ export default function SchoolDetail() {
 
         <div className={'rounded-lg shadow-md p-6 mb-6 border-2 ' + getSeverityColor(currentGap)}>
           <div className="text-center">
-            <div className="text-sm font-medium text-gray-600 mb-1">Your Annual Gap</div>
+            <div className="text-sm font-medium text-gray-700 mb-1">Your Annual Gap</div>
             <div className="text-4xl font-bold mb-2">
               {currentGap !== null && currentGap < 0
                 ? '+' + formatMoney(Math.abs(currentGap))
@@ -201,11 +201,11 @@ export default function SchoolDetail() {
 
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
               <div>
-                <div className="text-sm text-gray-600">+ Travel from Poconos</div>
+                <div className="text-sm text-gray-700">+ Travel from Poconos</div>
                 <div className="text-xl font-semibold">{formatMoney(school.annual_travel_cost)}/yr</div>
               </div>
               <div>
-                <div className="text-sm text-gray-600">= True Annual Cost</div>
+                <div className="text-sm text-gray-700">= True Annual Cost</div>
                 <div className="text-xl font-bold">{formatMoney(trueCost)}/yr</div>
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function SchoolDetail() {
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold mb-2">How The Gap Is Calculated</h2>
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-gray-700 mb-4">
             The Gap is what your family actually pays out-of-pocket after all grants and scholarships are applied.
             It's the difference between the school's total cost and the financial aid you're expected to receive.
           </p>
@@ -266,7 +266,7 @@ export default function SchoolDetail() {
           <h2 className="text-lg font-semibold mb-4">4-Year Cost Projection</h2>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-sm text-gray-600">4-Year Gap Total</div>
+              <div className="text-sm text-gray-700">4-Year Gap Total</div>
               <div className="text-2xl font-bold">
                 {fourYearGap !== null && fourYearGap < 0 
                   ? '+' + formatMoney(Math.abs(fourYearGap))
@@ -275,7 +275,7 @@ export default function SchoolDetail() {
               </div>
             </div>
             <div>
-              <div className="text-sm text-gray-600">4-Year Travel</div>
+              <div className="text-sm text-gray-700">4-Year Travel</div>
               <div className="text-2xl font-bold">{formatMoney((school.annual_travel_cost || 0) * 4)}</div>
             </div>
             <div className="bg-[#CF7A3C]/10 rounded-lg p-3">
@@ -337,7 +337,7 @@ export default function SchoolDetail() {
                 {school.admission_rate && (
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
                     <div className="text-2xl font-bold">{(school.admission_rate * 100).toFixed(0)}%</div>
-                    <div className="text-sm text-gray-600">Admission Rate</div>
+                    <div className="text-sm text-gray-700">Admission Rate</div>
                   </div>
                 )}
                 {school.sat_read_25 && school.sat_math_25 && (
@@ -345,13 +345,13 @@ export default function SchoolDetail() {
                     <div className="text-2xl font-bold">
                       {school.sat_read_25 + school.sat_math_25} - {school.sat_read_75 + school.sat_math_75}
                     </div>
-                    <div className="text-sm text-gray-600">SAT Range (middle 50%)</div>
+                    <div className="text-sm text-gray-700">SAT Range (middle 50%)</div>
                   </div>
                 )}
                 {school.act_25 && (
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
                     <div className="text-2xl font-bold">{school.act_25} - {school.act_75}</div>
-                    <div className="text-sm text-gray-600">ACT Range (middle 50%)</div>
+                    <div className="text-sm text-gray-700">ACT Range (middle 50%)</div>
                   </div>
                 )}
               </div>
@@ -360,7 +360,7 @@ export default function SchoolDetail() {
               </div>
             </>
           ) : (
-            <p className="text-gray-600 text-sm">Admission data not reported. This school may have open enrollment or test-optional admissions.</p>
+            <p className="text-gray-700 text-sm">Admission data not reported. This school may have open enrollment or test-optional admissions.</p>
           )}
         </div>
 
@@ -369,20 +369,20 @@ export default function SchoolDetail() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold">{formatPercent(school.grad_rate_4yr)}</div>
-              <div className="text-sm text-gray-600">4-Year Grad Rate</div>
+              <div className="text-sm text-gray-700">4-Year Grad Rate</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold">{formatPercent(school.grad_rate_pell)}</div>
-              <div className="text-sm text-gray-600">Pell Grad Rate</div>
+              <div className="text-sm text-gray-700">Pell Grad Rate</div>
               <div className="text-xs text-gray-700">(low-income students)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold">{formatMoney(school.median_debt)}</div>
-              <div className="text-sm text-gray-600">Median Debt</div>
+              <div className="text-sm text-gray-700">Median Debt</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold">{formatMoney(school.median_earnings_10yr)}</div>
-              <div className="text-sm text-gray-600">Earnings (10yr)</div>
+              <div className="text-sm text-gray-700">Earnings (10yr)</div>
             </div>
           </div>
         </div>
@@ -391,11 +391,11 @@ export default function SchoolDetail() {
           <h2 className="text-lg font-semibold mb-4">Getting There from the Poconos</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-sm text-gray-600">Travel Type</div>
+              <div className="text-sm text-gray-700">Travel Type</div>
               <div className="text-lg font-medium">{school.travel_type === 'FLY' ? 'Fly' : 'Drive'}</div>
             </div>
             <div>
-              <div className="text-sm text-gray-600">Annual Travel Budget</div>
+              <div className="text-sm text-gray-700">Annual Travel Budget</div>
               <div className="text-lg font-medium">{formatMoney(school.annual_travel_cost)}</div>
               <div className="text-xs text-gray-700">(estimated 5 trips/year)</div>
             </div>
