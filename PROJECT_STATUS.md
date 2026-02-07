@@ -229,7 +229,7 @@ Estimated based on school location:
 
 **Local Development:**
 ```bash
-cd /Users/inchwormdesign/Documents/college-database
+cd /Users/inchwormdesign/ai_tool/college_search_tool
 npm run dev
 # Opens at http://localhost:3000
 ```
