@@ -48,6 +48,8 @@ scorecard_columns = [
     'ACTCM25',
     'ACTCM75',
     'ACTCMMID',
+    'LATITUDE',    # Geographic coordinates
+    'LONGITUDE',
 ]
 
 # Output columns
@@ -67,6 +69,8 @@ output_columns = [
     'act_25',
     'act_75',
     'act_mid',
+    'latitude',
+    'longitude',
 ]
 
 print("Generating comprehensive update file...")
@@ -120,6 +124,9 @@ with open(scorecard_file, 'r', encoding='utf-8') as infile, \
         act_75 = clean_value(row.get('ACTCM75', ''))
         act_mid = clean_value(row.get('ACTCMMID', ''))
 
+        latitude = clean_value(row.get('LATITUDE', ''))
+        longitude = clean_value(row.get('LONGITUDE', ''))
+
         writer.writerow([
             unitid,
             name,
@@ -136,6 +143,8 @@ with open(scorecard_file, 'r', encoding='utf-8') as infile, \
             act_25,
             act_75,
             act_mid,
+            latitude,
+            longitude,
         ])
 
         if rows_processed % 1000 == 0:

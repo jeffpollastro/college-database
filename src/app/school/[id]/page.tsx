@@ -1,9 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
+
+const SchoolMap = dynamic(() => import('@/components/SchoolMap'), { ssr: false })
 
 export default function SchoolDetail() {
   const params = useParams()
@@ -386,6 +389,18 @@ export default function SchoolDetail() {
             </div>
           </div>
         </div>
+
+        {school.latitude != null && school.longitude != null && (
+          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 className="text-lg font-semibold mb-3">Location</h2>
+            <SchoolMap
+              schools={[school]}
+              incomeBracket={incomeBracket as '0-30k' | '30-48k' | '48-75k' | '75-110k' | '110k+'}
+              height="320px"
+              singleSchool
+            />
+          </div>
+        )}
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold mb-4">Getting There from the Poconos</h2>

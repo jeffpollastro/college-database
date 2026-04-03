@@ -1,8 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
+
+const SchoolMap = dynamic(() => import('@/components/SchoolMap'), { ssr: false })
+
+function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 3959 // miles
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+// Stroudsburg, PA as the default proximity origin
+const STROUDSBURG: [number, number] = [41.0048, -75.198]
 
 const US_STATES = [
   { code: 'any', name: 'All States' },
@@ -35,6 +51,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
   const [compareList, setCompareList] = useState<string[]>([])
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
+  const [useProximity, setUseProximity] = useState(false)
+  const [proximityCenter, setProximityCenter] = useState<[number, number]>(STROUDSBURG)
+  const [proximityLabel, setProximityLabel] = useState('Stroudsburg, PA')
+  const [proximityRadius, setProximityRadius] = useState(150)
+  const [gettingLocation, setGettingLocation] = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem('compareSchools')
@@ -66,18 +88,40 @@ export default function Home() {
     '110k+': 'gap_110k_plus',
   }
 
+  const useMyLocation = () => {
+    if (!navigator.geolocation) return
+    setGettingLocation(true)
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        setProximityCenter([pos.coords.latitude, pos.coords.longitude])
+        setProximityLabel('Your Location')
+        setGettingLocation(false)
+      },
+      () => {
+        setGettingLocation(false)
+        alert('Could not get your location. Using Stroudsburg, PA as default.')
+      }
+    )
+  }
+
   const searchSchools = async () => {
     setLoading(true)
     setSearched(true)
 
     const gapCol = gapColumn[incomeBracket]
-    
+
     let query = supabase
       .from('schools')
       .select('*')
       .not(gapCol, 'is', null)
       .order(gapCol, { ascending: true })
-      .limit(100)
+
+    // Proximity mode fetches more records for client-side distance filtering
+    if (useProximity) {
+      query = query.limit(3000)
+    } else {
+      query = query.limit(100)
+    }
 
     if (maxGap !== 'any') {
       query = query.lte(gapCol, parseInt(maxGap))
@@ -101,9 +145,17 @@ export default function Home() {
       console.error('Error:', error)
       setSchools([])
     } else {
-      setSchools(data || [])
+      let results = data || []
+      // Client-side distance filter
+      if (useProximity) {
+        results = results.filter(s => {
+          if (s.latitude == null || s.longitude == null) return false
+          return haversineDistance(proximityCenter[0], proximityCenter[1], s.latitude, s.longitude) <= proximityRadius
+        })
+      }
+      setSchools(results)
     }
-    
+
     setLoading(false)
   }
 
@@ -301,7 +353,7 @@ export default function Home() {
           </div>
 
           {/* School Name Search */}
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Search by School Name (optional)
             </label>
@@ -315,6 +367,63 @@ export default function Home() {
             />
           </div>
 
+          {/* Proximity Search */}
+          <div className="mb-6 border border-[#6B4380]/20 rounded-lg p-4 bg-[#6B4380]/5">
+            <div className="flex items-center justify-between mb-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={useProximity}
+                  onChange={(e) => setUseProximity(e.target.checked)}
+                  className="w-4 h-4 rounded"
+                />
+                <span className="text-sm font-medium text-[#3D3530]">Search by distance from a location</span>
+              </label>
+            </div>
+            {useProximity && (
+              <div className="flex flex-wrap gap-3 items-end">
+                <div>
+                  <div className="text-xs text-gray-600 mb-1">Origin</div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-[#6B4380] bg-white border border-[#6B4380]/30 px-3 py-1.5 rounded">
+                      {proximityLabel}
+                    </span>
+                    <button
+                      onClick={useMyLocation}
+                      disabled={gettingLocation}
+                      className="text-xs bg-[#6B4380] text-white px-3 py-1.5 rounded hover:bg-[#5A3770] disabled:opacity-50"
+                    >
+                      {gettingLocation ? 'Locating...' : 'Use My Location'}
+                    </button>
+                    {proximityLabel !== 'Stroudsburg, PA' && (
+                      <button
+                        onClick={() => { setProximityCenter(STROUDSBURG); setProximityLabel('Stroudsburg, PA') }}
+                        className="text-xs text-gray-500 hover:text-gray-700 underline"
+                      >
+                        Reset to Stroudsburg
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Within</label>
+                  <select
+                    value={proximityRadius}
+                    onChange={(e) => setProximityRadius(parseInt(e.target.value))}
+                    className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B4380]"
+                  >
+                    <option value={50}>50 miles</option>
+                    <option value={100}>100 miles</option>
+                    <option value={150}>150 miles</option>
+                    <option value={200}>200 miles</option>
+                    <option value={300}>300 miles</option>
+                    <option value={500}>500 miles</option>
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Info Box */}
           <div className="bg-[#5FBBC4]/10 border border-[#5FBBC4] rounded-md p-4 text-sm text-[#3D3530]">
             <strong>What is "The Gap"?</strong> It's the amount your family would need to pay or borrow each year after all grants and scholarships.
@@ -325,13 +434,30 @@ export default function Home() {
         {/* Results */}
         {searched && (
           <div>
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-wrap justify-between items-center mb-4 gap-3">
               <h2 className="text-xl font-semibold">
                 {schools.length > 0 ? `Found ${schools.length} Schools` : 'No Schools Found'}
               </h2>
               <div className="flex items-center gap-4">
                 {schools.length > 0 && (
-                  <span className="text-sm text-gray-700">Sorted by lowest gap first</span>
+                  <>
+                    <span className="text-sm text-gray-700">Sorted by lowest gap first</span>
+                    {/* List / Map toggle */}
+                    <div className="flex rounded-md border border-gray-300 overflow-hidden text-sm">
+                      <button
+                        onClick={() => setViewMode('list')}
+                        className={`px-3 py-1.5 ${viewMode === 'list' ? 'bg-[#CF7A3C] text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        ☰ List
+                      </button>
+                      <button
+                        onClick={() => setViewMode('map')}
+                        className={`px-3 py-1.5 border-l border-gray-300 ${viewMode === 'map' ? 'bg-[#CF7A3C] text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        ⊕ Map
+                      </button>
+                    </div>
+                  </>
                 )}
                 <button
                   onClick={() => {
@@ -349,13 +475,27 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Map view */}
+            {viewMode === 'map' && schools.length > 0 && (
+              <div className="mb-6">
+                <SchoolMap
+                  schools={schools}
+                  incomeBracket={incomeBracket as '0-30k' | '30-48k' | '48-75k' | '75-110k' | '110k+'}
+                  proximityCenter={useProximity ? proximityCenter : undefined}
+                  proximityRadiusMiles={useProximity ? proximityRadius : undefined}
+                  height="520px"
+                />
+              </div>
+            )}
+
             {schools.length === 0 && !loading && (
               <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-700">
                 <p>No schools match your criteria. Try adjusting your filters.</p>
               </div>
             )}
 
-            <div className="space-y-4">
+            {/* List view */}
+            <div className={`space-y-4 ${viewMode === 'map' ? 'hidden' : ''}`}>
               {schools.map((school) => {
                 const gap = getGapForBracket(school)
                 const trueCost = (gap || 0) + (school.annual_travel_cost || 0)

@@ -1,8 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
+
+const SchoolMap = dynamic(() => import('@/components/SchoolMap'), { ssr: false })
 
 export default function ComparePage() {
   const [schools, setSchools] = useState<School[]>([])
@@ -215,6 +218,18 @@ export default function ComparePage() {
             )}
           </div>
         </div>
+
+        {/* Map showing all compared schools */}
+        {schools.length > 0 && schools.some(s => s.latitude != null) && (
+          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 className="text-base font-semibold text-gray-700 mb-3">School Locations</h2>
+            <SchoolMap
+              schools={schools}
+              incomeBracket={incomeBracket as '0-30k' | '30-48k' | '48-75k' | '75-110k' | '110k+'}
+              height="360px"
+            />
+          </div>
+        )}
 
         {schools.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">

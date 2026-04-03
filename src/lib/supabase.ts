@@ -39,4 +39,6 @@ export type School = {
   sat_math_75: number
   act_25: number
   act_75: number
+  latitude: number | null
+  longitude: number | null
 }
