@@ -1,150 +1,141 @@
 -- Run this in your Supabase SQL editor (supabase.com → project → SQL Editor)
--- Adds hbcu boolean column to the schools table and populates all known HBCUs
--- Source: U.S. Department of Education official HBCU list (101 institutions)
+-- Adds hbcu boolean column to the schools table and populates all verified HBCUs
+-- Unit IDs sourced directly from crown_hub_colleges.csv — verified against school names
 
 ALTER TABLE schools
   ADD COLUMN IF NOT EXISTS hbcu boolean DEFAULT false;
 
--- Populate known HBCUs by IPEDS unit ID
+-- Reset any previously incorrect tags
+UPDATE schools SET hbcu = false;
+
+-- Set confirmed HBCUs by verified IPEDS unit ID
 UPDATE schools
 SET hbcu = true
 WHERE unitid IN (
   -- Alabama
   '100654',  -- Alabama A&M University
   '100724',  -- Alabama State University
-  '100659',  -- Concordia College Alabama
-  '100830',  -- Miles College
-  '101480',  -- Oakwood University
-  '101618',  -- Talladega College
-  '101709',  -- Stillman College
-  '101897',  -- Tuskegee University
-  '100812',  -- Bishop State Community College
-  '100937',  -- J.F. Drake State Community and Technical College
-  '101143',  -- Lawson State Community College
+  '101675',  -- Miles College
+  '101912',  -- Oakwood University
+  '102270',  -- Stillman College
+  '102298',  -- Talladega College
+  '102377',  -- Tuskegee University
 
   -- Arkansas
-  '106467',  -- Arkansas Baptist College
-  '106704',  -- University of Arkansas at Pine Bluff
-  '107983',  -- Philander Smith University
+  '106306',  -- Arkansas Baptist College
+  '107600',  -- Philander Smith University
+
+  -- California
+  '117557',  -- Lincoln University (Oakland, CA)
 
   -- Delaware
-  '130183',  -- Delaware State University
+  '130934',  -- Delaware State University
 
   -- District of Columbia
-  '131469',  -- University of the District of Columbia
+  '131399',  -- University of the District of Columbia
   '131520',  -- Howard University
 
   -- Florida
-  '132471',  -- Bethune-Cookman University
-  '133553',  -- Edward Waters University
-  '133650',  -- Florida A&M University
-  '133702',  -- Florida Memorial University
+  '132602',  -- Bethune-Cookman University
+  '133526',  -- Edward Waters University
+  '133650',  -- Florida Agricultural and Mechanical University
+  '133979',  -- Florida Memorial University
 
   -- Georgia
   '138947',  -- Clark Atlanta University
-  '139009',  -- Morehouse College
-  '139032',  -- Morris Brown College
-  '139144',  -- Spelman College
-  '139931',  -- Fort Valley State University
-  '141945',  -- Savannah State University
-  '142285',  -- Interdenominational Theological Center
+  '139719',  -- Fort Valley State University
+  '140553',  -- Morehouse College
+  '140571',  -- Morris Brown College
+  '140960',  -- Savannah State University
+  '141060',  -- Spelman College
 
   -- Kentucky
-  '157289',  -- Simmons College of Kentucky
-  '157386',  -- Kentucky State University
+  '157058',  -- Kentucky State University
+  '461759',  -- Simmons College of Kentucky
 
   -- Louisiana
-  '158829',  -- Dillard University
+  '158802',  -- Dillard University
   '159009',  -- Grambling State University
-  '159596',  -- Southern University and A&M College
-  '159714',  -- Southern University at New Orleans
-  '161554',  -- Xavier University of Louisiana
+  '160621',  -- Southern University and A&M College
+  '160630',  -- Southern University at New Orleans
+  '160649',  -- Southern University at Shreveport
+  '160904',  -- Xavier University of Louisiana
 
   -- Maryland
-  '162283',  -- Bowie State University
-  '162654',  -- Coppin State University
-  '163268',  -- Morgan State University
-  '163271',  -- University of Maryland Eastern Shore
+  '162007',  -- Bowie State University
+  '162283',  -- Coppin State University
+  '163338',  -- University of Maryland Eastern Shore
+  '163453',  -- Morgan State University
 
   -- Mississippi
   '175342',  -- Alcorn State University
-  '175421',  -- Coahoma Community College
-  '175616',  -- Jackson State University
-  '175717',  -- Mississippi Valley State University
-  '177214',  -- Rust College
-  '177986',  -- Tougaloo College
+  '175519',  -- Coahoma Community College
+  '175856',  -- Jackson State University
+  '176044',  -- Mississippi Valley State University
+  '176318',  -- Rust College
+  '176406',  -- Tougaloo College
 
   -- Missouri
-  '177399',  -- Harris-Stowe State University
-  '177834',  -- Lincoln University (MO)
+  '177551',  -- Harris-Stowe State University
+  '177940',  -- Lincoln University (MO)
 
   -- North Carolina
-  '198136',  -- Bennett College
-  '198419',  -- Elizabeth City State University
-  '198507',  -- Fayetteville State University
-  '199111',  -- North Carolina Central University
-  '199120',  -- North Carolina A&T State University
-  '199156',  -- Johnson C. Smith University
-  '199218',  -- Livingstone College
-  '199399',  -- Winston-Salem State University
+  '197993',  -- Bennett College
+  '198507',  -- Elizabeth City State University
+  '198543',  -- Fayetteville State University
+  '198756',  -- Johnson C Smith University
+  '198862',  -- Livingstone College
+  '199102',  -- North Carolina A&T State University
+  '199157',  -- North Carolina Central University
+  '199582',  -- Saint Augustine's University
+  '199643',  -- Shaw University
+  '199999',  -- Winston-Salem State University
 
   -- Ohio
-  '203368',  -- Central State University
-  '206795',  -- Wilberforce University
+  '201690',  -- Central State University
+  '206491',  -- Wilberforce University
 
   -- Oklahoma
-  '206941',  -- Langston University
+  '207209',  -- Langston University
 
   -- Pennsylvania
-  '211158',  -- Cheyney University of Pennsylvania
-  '213011',  -- Lincoln University (PA)
+  '211608',  -- Cheyney University of Pennsylvania
+  '213598',  -- Lincoln University (PA)
 
   -- South Carolina
-  '217235',  -- Benedict College
-  '217365',  -- Allen University
-  '217484',  -- Denmark Technical College
-  '217518',  -- Claflin University
-  '218519',  -- Morris College
-  '218535',  -- South Carolina State University
-  '218724',  -- Voorhees University
+  '217624',  -- Allen University
+  '217721',  -- Benedict College
+  '217873',  -- Claflin University
+  '217989',  -- Denmark Technical College
+  '218399',  -- Morris College
+  '218919',  -- Voorhees University
 
   -- Tennessee
-  '220575',  -- American Baptist College
-  '220598',  -- Fisk University
-  '220862',  -- Meharry Medical College
-  '221238',  -- Lane College
-  '221283',  -- LeMoyne-Owen College
-  '221971',  -- Tennessee State University
+  '220181',  -- Fisk University
+  '220598',  -- Lane College
+  '220604',  -- Le Moyne-Owen College
+  '221838',  -- Tennessee State University
 
   -- Texas
-  '225399',  -- St. Philip's College
-  '227372',  -- Paul Quinn College
-  '227375',  -- Huston-Tillotson University
-  '228251',  -- Jarvis Christian University
-  '228431',  -- Prairie View A&M University
-  '228537',  -- Southwestern Christian College
-  '228723',  -- Texas College
-  '228951',  -- Texas Southern University
-  '229814',  -- Wiley College
+  '225575',  -- Huston-Tillotson University
+  '225885',  -- Jarvis Christian University
+  '227429',  -- Paul Quinn College
+  '227526',  -- Prairie View A&M University
+  '228486',  -- Southwestern Christian College
+  '228884',  -- Texas College
+  '229063',  -- Texas Southern University
 
   -- Virginia
-  '121150',  -- Hampton University
-  '233277',  -- Norfolk State University
-  '233374',  -- Virginia State University
-  '233450',  -- Virginia Union University
-  '233468',  -- Virginia University of Lynchburg
-
-  -- Virgin Islands
-  '433660',  -- University of the Virgin Islands
+  '232265',  -- Hampton University
+  '232937',  -- Norfolk State University
+  '234137',  -- Virginia University of Lynchburg
+  '234155',  -- Virginia State University
+  '234164',  -- Virginia Union University
 
   -- West Virginia
-  '237011',  -- Bluefield State University
-  '237036'   -- West Virginia State University
+  '237215',  -- Bluefield State University
+  '237899'   -- West Virginia State University
 );
 
--- Fix: Shaw University is NC (199759), Saint Augustine's is NC (229780)
-UPDATE schools SET hbcu = true WHERE unitid = '199759'; -- Shaw University
-
--- Verify the count after running
--- SELECT COUNT(*) FROM schools WHERE hbcu = true;
--- Expected: ~80-101 (depending on how many of the 101 HBCUs passed the UGDS >= 100 filter)
+-- Verify: shows count and names of tagged schools
+SELECT unitid, name FROM schools WHERE hbcu = true ORDER BY name;
