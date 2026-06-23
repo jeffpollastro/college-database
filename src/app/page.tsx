@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
@@ -46,7 +46,13 @@ export default function Home() {
   const [maxGap, setMaxGap] = useState<string>('any')
   const [stateFilter, setStateFilter] = useState<string>('any')
   const [noLoanOnly, setNoLoanOnly] = useState(false)
+  const [hbcuOnly, setHbcuOnly] = useState(false)
   const [schoolName, setSchoolName] = useState('')
+  const [schoolNames, setSchoolNames] = useState<{ id: string; name: string }[]>([])
+  const [suggestions, setSuggestions] = useState<{ id: string; name: string }[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const suggestionsRef = useRef<HTMLDivElement>(null)
   const [schools, setSchools] = useState<School[]>([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
@@ -65,6 +71,22 @@ export default function Home() {
     }
   }, [])
 
+  useEffect(() => {
+    supabase.from('schools').select('id, name').order('name').then(({ data }) => {
+      if (data) setSchoolNames(data)
+    })
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   const toggleCompare = (schoolId: string) => {
     let newList: string[]
     if (compareList.includes(schoolId)) {
@@ -78,6 +100,51 @@ export default function Home() {
     }
     setCompareList(newList)
     localStorage.setItem('compareSchools', JSON.stringify(newList))
+  }
+
+  const handleNameChange = (value: string) => {
+    setSchoolName(value)
+    setHighlightedIndex(-1)
+    if (!value.trim()) {
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+    const words = value.toLowerCase().split(/\s+/).filter(Boolean)
+    const matches = schoolNames
+      .filter(s => words.every(w => s.name.toLowerCase().includes(w)))
+      .slice(0, 8)
+    setSuggestions(matches)
+    setShowSuggestions(matches.length > 0)
+  }
+
+  const selectSuggestion = (name: string) => {
+    setSchoolName(name)
+    setSuggestions([])
+    setShowSuggestions(false)
+    setHighlightedIndex(-1)
+  }
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions) {
+      if (e.key === 'Enter') searchSchools()
+      return
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setHighlightedIndex(i => Math.min(i + 1, suggestions.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setHighlightedIndex(i => Math.max(i - 1, -1))
+    } else if (e.key === 'Enter') {
+      if (highlightedIndex >= 0) {
+        selectSuggestion(suggestions[highlightedIndex].name)
+      } else {
+        searchSchools()
+      }
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false)
+    }
   }
 
   const gapColumn: Record<string, string> = {
@@ -129,6 +196,10 @@ export default function Home() {
 
     if (noLoanOnly) {
       query = query.eq('no_loan_policy', true)
+    }
+
+    if (hbcuOnly) {
+      query = query.eq('hbcu', true)
     }
 
     if (stateFilter !== 'any') {
@@ -327,8 +398,8 @@ export default function Home() {
               </select>
             </div>
 
-            {/* No Loan Filter */}
-            <div className="flex items-end">
+            {/* No Loan + HBCU Filters */}
+            <div className="flex flex-col justify-end gap-2">
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -337,6 +408,15 @@ export default function Home() {
                   className="w-4 h-4 text-blue-600 rounded focus:ring-[#CF7A3C]"
                 />
                 <span className="text-sm text-gray-700">No-loan policy only</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={hbcuOnly}
+                  onChange={(e) => setHbcuOnly(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-[#CF7A3C]"
+                />
+                <span className="text-sm text-gray-700">HBCUs only</span>
               </label>
             </div>
 
@@ -357,14 +437,36 @@ export default function Home() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Search by School Name (optional)
             </label>
-            <input
-              type="text"
-              value={schoolName}
-              onChange={(e) => setSchoolName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && searchSchools()}
-              placeholder="e.g., Hunter College, Penn State, UCLA..."
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
-            />
+            <div className="relative" ref={suggestionsRef}>
+              <input
+                type="text"
+                value={schoolName}
+                onChange={(e) => handleNameChange(e.target.value)}
+                onKeyDown={handleNameKeyDown}
+                onFocus={() => schoolName.trim() && suggestions.length > 0 && setShowSuggestions(true)}
+                placeholder="e.g., Hunter College, Penn State, UCLA..."
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
+                autoComplete="off"
+              />
+              {showSuggestions && (
+                <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden">
+                  {suggestions.map((s, i) => (
+                    <li
+                      key={s.id}
+                      onMouseDown={() => selectSuggestion(s.name)}
+                      onMouseEnter={() => setHighlightedIndex(i)}
+                      className={`px-4 py-2 text-sm cursor-pointer ${
+                        i === highlightedIndex
+                          ? 'bg-[#CF7A3C] text-white'
+                          : 'text-gray-800 hover:bg-[#F5F0E6]'
+                      }`}
+                    >
+                      {s.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           {/* Proximity Search */}
@@ -464,9 +566,12 @@ export default function Home() {
                     setSearched(false)
                     setSchools([])
                     setSchoolName('')
+                    setSuggestions([])
+                    setShowSuggestions(false)
                     setMaxGap('any')
                     setStateFilter('any')
                     setNoLoanOnly(false)
+                    setHbcuOnly(false)
                   }}
                   className="text-sm text-[#CF7A3C] hover:text-[#B86A2F] underline"
                 >
@@ -510,6 +615,11 @@ export default function Home() {
                           {school.no_loan_policy && (
                             <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">
                               No-Loan Policy
+                            </span>
+                          )}
+                          {school.hbcu && (
+                            <span className="bg-[#6B4380] text-white text-xs px-2 py-1 rounded">
+                              HBCU
                             </span>
                           )}
                         </div>

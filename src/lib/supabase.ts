@@ -41,4 +41,5 @@ export type School = {
   act_75: number
   latitude: number | null
   longitude: number | null
+  hbcu: boolean | null
 }

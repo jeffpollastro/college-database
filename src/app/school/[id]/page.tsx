@@ -158,6 +158,11 @@ export default function SchoolDetail() {
                   No-Loan Policy
                 </span>
               )}
+              {school.hbcu && (
+                <span className="bg-[#3D3530] text-white px-3 py-1 rounded-full text-sm font-medium">
+                  HBCU
+                </span>
+              )}
               <button
                 onClick={toggleCompare}
                 className={`px-3 py-1 rounded-full text-sm font-medium ${
