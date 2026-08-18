@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { supabase, School } from '@/lib/supabase'
+import SiteHeader from '@/components/SiteHeader'
+import PageHero from '@/components/PageHero'
+import SiteFooter from '@/components/SiteFooter'
 
 const SchoolMap = dynamic(() => import('@/components/SchoolMap'), { ssr: false })
 
@@ -318,39 +321,29 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F0E6]">
-      {/* Header */}
-      <div className="bg-[#3D3530]">
-        <div className="max-w-6xl mx-auto">
-          <img
-            src="/banner_header.png"
-            alt="The Crown Hub"
-            className="w-full max-h-32 object-contain object-left py-2"
-          />
-        </div>
-        <div className="bg-[#CF7A3C] py-3 px-4">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-2xl font-bold text-white">College Search</h1>
-            <p className="text-white/90 text-sm">Find colleges that are truly affordable for your family</p>
-          </div>
-        </div>
-      </div>
+    <main className="min-h-screen bg-cream">
+      <SiteHeader />
+      <PageHero
+        eyebrow="Crown Roots Foundation"
+        title="Find Colleges You Can Actually Afford"
+        subtitle="See your real out-of-pocket cost before you apply — built for Pocono families."
+      />
 
       {/* Search Section */}
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Find Affordable Colleges</h2>
+        <div className="bg-surface rounded-2xl shadow-sm border border-ink/5 p-6 md:p-8 mb-8">
+          <h2 className="font-heading text-xl font-semibold text-ink mb-5">Find Affordable Colleges</h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
             {/* Income Bracket */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="flex items-end min-h-[2.5rem] text-sm font-medium text-ink-soft mb-1.5">
                 Your Family Income
               </label>
               <select
                 value={incomeBracket}
                 onChange={(e) => setIncomeBracket(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
+                className="w-full h-11 border border-ink/15 rounded-xl px-3 bg-surface focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
               >
                 <option value="0-30k">$0 - $30,000</option>
                 <option value="30-48k">$30,001 - $48,000</option>
@@ -362,13 +355,13 @@ export default function Home() {
 
             {/* Max Gap */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="flex items-end min-h-[2.5rem] text-sm font-medium text-ink-soft mb-1.5">
                 Maximum Gap (What You Pay)
               </label>
               <select
                 value={maxGap}
                 onChange={(e) => setMaxGap(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
+                className="w-full h-11 border border-ink/15 rounded-xl px-3 bg-surface focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
               >
                 <option value="any">Show All</option>
                 <option value="0">$0 (Free!)</option>
@@ -382,13 +375,13 @@ export default function Home() {
 
             {/* State Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="flex items-end min-h-[2.5rem] text-sm font-medium text-ink-soft mb-1.5">
                 State
               </label>
               <select
                 value={stateFilter}
                 onChange={(e) => setStateFilter(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
+                className="w-full h-11 border border-ink/15 rounded-xl px-3 bg-surface focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
               >
                 {US_STATES.map((state) => (
                   <option key={state.code} value={state.code}>
@@ -399,24 +392,24 @@ export default function Home() {
             </div>
 
             {/* No Loan + HBCU Filters */}
-            <div className="flex flex-col justify-end gap-2">
-              <label className="flex items-center space-x-2 cursor-pointer">
+            <div className="flex flex-col justify-center gap-2.5">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={noLoanOnly}
                   onChange={(e) => setNoLoanOnly(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded focus:ring-[#CF7A3C]"
+                  className="w-4 h-4 rounded accent-brand"
                 />
-                <span className="text-sm text-gray-700">No-loan policy only</span>
+                <span className="text-sm text-ink-soft">No-loan policy only</span>
               </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={hbcuOnly}
                   onChange={(e) => setHbcuOnly(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded focus:ring-[#CF7A3C]"
+                  className="w-4 h-4 rounded accent-brand"
                 />
-                <span className="text-sm text-gray-700">HBCUs only</span>
+                <span className="text-sm text-ink-soft">HBCUs only</span>
               </label>
             </div>
 
@@ -425,16 +418,16 @@ export default function Home() {
               <button
                 onClick={searchSchools}
                 disabled={loading}
-                className="w-full bg-[#CF7A3C] text-white py-2 px-4 rounded-md hover:bg-[#B86A2F] disabled:bg-[#D9A97A] transition-colors"
+                className="w-full h-11 bg-brand text-ink font-semibold rounded-xl hover:bg-brand-dark disabled:bg-brand/40 disabled:text-ink/50 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
-                {loading ? 'Searching...' : 'Search Schools'}
+                {loading ? 'Searching…' : 'Search Schools'}
               </button>
             </div>
           </div>
 
           {/* School Name Search */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-ink-soft mb-1.5">
               Search by School Name (optional)
             </label>
             <div className="relative" ref={suggestionsRef}>
@@ -445,11 +438,11 @@ export default function Home() {
                 onKeyDown={handleNameKeyDown}
                 onFocus={() => schoolName.trim() && suggestions.length > 0 && setShowSuggestions(true)}
                 placeholder="e.g., Hunter College, Penn State, UCLA..."
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#CF7A3C]"
+                className="w-full h-11 border border-ink/15 rounded-xl px-3 bg-surface focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
                 autoComplete="off"
               />
               {showSuggestions && (
-                <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden">
+                <ul className="absolute z-50 left-0 right-0 top-full mt-1 bg-surface border border-ink/10 rounded-xl shadow-lg overflow-hidden">
                   {suggestions.map((s, i) => (
                     <li
                       key={s.id}
@@ -457,8 +450,8 @@ export default function Home() {
                       onMouseEnter={() => setHighlightedIndex(i)}
                       className={`px-4 py-2 text-sm cursor-pointer ${
                         i === highlightedIndex
-                          ? 'bg-[#CF7A3C] text-white'
-                          : 'text-gray-800 hover:bg-[#F5F0E6]'
+                          ? 'bg-brand text-ink'
+                          : 'text-ink-soft hover:bg-cream'
                       }`}
                     >
                       {s.name}
@@ -470,37 +463,37 @@ export default function Home() {
           </div>
 
           {/* Proximity Search */}
-          <div className="mb-6 border border-[#6B4380]/20 rounded-lg p-4 bg-[#6B4380]/5">
+          <div className="mb-6 border border-plum/20 rounded-xl p-4 bg-plum/5">
             <div className="flex items-center justify-between mb-3">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={useProximity}
                   onChange={(e) => setUseProximity(e.target.checked)}
-                  className="w-4 h-4 rounded"
+                  className="w-4 h-4 rounded accent-plum"
                 />
-                <span className="text-sm font-medium text-[#3D3530]">Search by distance from a location</span>
+                <span className="text-sm font-medium text-ink">Search by distance from a location</span>
               </label>
             </div>
             {useProximity && (
               <div className="flex flex-wrap gap-3 items-end">
                 <div>
-                  <div className="text-xs text-gray-600 mb-1">Origin</div>
+                  <div className="text-xs text-ink-soft mb-1">Origin</div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-[#6B4380] bg-white border border-[#6B4380]/30 px-3 py-1.5 rounded">
+                    <span className="text-sm font-medium text-plum bg-surface border border-plum/30 px-3 py-1.5 rounded-lg">
                       {proximityLabel}
                     </span>
                     <button
                       onClick={useMyLocation}
                       disabled={gettingLocation}
-                      className="text-xs bg-[#6B4380] text-white px-3 py-1.5 rounded hover:bg-[#5A3770] disabled:opacity-50"
+                      className="text-xs bg-plum text-white px-3 py-1.5 rounded-lg hover:bg-plum-light disabled:opacity-50 transition-colors cursor-pointer"
                     >
-                      {gettingLocation ? 'Locating...' : 'Use My Location'}
+                      {gettingLocation ? 'Locating…' : 'Use My Location'}
                     </button>
                     {proximityLabel !== 'Stroudsburg, PA' && (
                       <button
                         onClick={() => { setProximityCenter(STROUDSBURG); setProximityLabel('Stroudsburg, PA') }}
-                        className="text-xs text-gray-500 hover:text-gray-700 underline"
+                        className="text-xs text-ink-soft hover:text-ink underline cursor-pointer"
                       >
                         Reset to Stroudsburg
                       </button>
@@ -508,11 +501,11 @@ export default function Home() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">Within</label>
+                  <label className="block text-xs text-ink-soft mb-1">Within</label>
                   <select
                     value={proximityRadius}
                     onChange={(e) => setProximityRadius(parseInt(e.target.value))}
-                    className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B4380]"
+                    className="border border-ink/15 rounded-lg px-3 py-1.5 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-plum transition-colors"
                   >
                     <option value={50}>50 miles</option>
                     <option value={100}>100 miles</option>
@@ -527,9 +520,9 @@ export default function Home() {
           </div>
 
           {/* Info Box */}
-          <div className="bg-[#5FBBC4]/10 border border-[#5FBBC4] rounded-md p-4 text-sm text-[#3D3530]">
-            <strong>What is "The Gap"?</strong> It's the amount your family would need to pay or borrow each year after all grants and scholarships.
-            Schools with <span className="text-green-700 font-semibold">$0 gap</span> are truly free for your income level.
+          <div className="bg-mint/25 border border-mint rounded-xl p-4 text-sm text-ink">
+            <strong>What is &ldquo;The Gap&rdquo;?</strong> It&apos;s the amount your family would need to pay or borrow each year after all grants and scholarships.
+            Schools with <span className="text-mint-ink font-semibold">$0 gap</span> are truly free for your income level.
           </div>
         </div>
 
@@ -537,26 +530,26 @@ export default function Home() {
         {searched && (
           <div>
             <div className="flex flex-wrap justify-between items-center mb-4 gap-3">
-              <h2 className="text-xl font-semibold">
+              <h2 className="font-heading text-xl font-semibold text-ink">
                 {schools.length > 0 ? `Found ${schools.length} Schools` : 'No Schools Found'}
               </h2>
               <div className="flex items-center gap-4">
                 {schools.length > 0 && (
                   <>
-                    <span className="text-sm text-gray-700">Sorted by lowest gap first</span>
+                    <span className="text-sm text-ink-soft">Sorted by lowest gap first</span>
                     {/* List / Map toggle */}
-                    <div className="flex rounded-md border border-gray-300 overflow-hidden text-sm">
+                    <div className="flex rounded-full border border-ink/15 overflow-hidden text-sm bg-surface">
                       <button
                         onClick={() => setViewMode('list')}
-                        className={`px-3 py-1.5 ${viewMode === 'list' ? 'bg-[#CF7A3C] text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                        className={`px-4 py-1.5 cursor-pointer transition-colors ${viewMode === 'list' ? 'bg-ink text-cream' : 'text-ink-soft hover:bg-cream'}`}
                       >
-                        ☰ List
+                        List
                       </button>
                       <button
                         onClick={() => setViewMode('map')}
-                        className={`px-3 py-1.5 border-l border-gray-300 ${viewMode === 'map' ? 'bg-[#CF7A3C] text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                        className={`px-4 py-1.5 cursor-pointer transition-colors ${viewMode === 'map' ? 'bg-ink text-cream' : 'text-ink-soft hover:bg-cream'}`}
                       >
-                        ⊕ Map
+                        Map
                       </button>
                     </div>
                   </>
@@ -573,7 +566,7 @@ export default function Home() {
                     setNoLoanOnly(false)
                     setHbcuOnly(false)
                   }}
-                  className="text-sm text-[#CF7A3C] hover:text-[#B86A2F] underline"
+                  className="text-sm text-brand-dark hover:text-ink underline cursor-pointer"
                 >
                   Clear & Start Over
                 </button>
@@ -594,7 +587,7 @@ export default function Home() {
             )}
 
             {schools.length === 0 && !loading && (
-              <div className="bg-white rounded-lg shadow-md p-8 text-center text-gray-700">
+              <div className="bg-surface rounded-2xl shadow-sm border border-ink/5 p-8 text-center text-ink-soft">
                 <p>No schools match your criteria. Try adjusting your filters.</p>
               </div>
             )}
@@ -604,33 +597,33 @@ export default function Home() {
               {schools.map((school) => {
                 const gap = getGapForBracket(school)
                 const trueCost = (gap || 0) + (school.annual_travel_cost || 0)
-                
+
                 return (
-                  <div key={school.id} className="bg-white rounded-lg shadow-md p-6">
+                  <div key={school.id} className="bg-surface rounded-2xl shadow-sm border border-ink/5 hover:shadow-md transition-shadow duration-200 p-6">
                     <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
                       {/* School Info */}
                       <div className="flex-1">
-                        <div className="flex items-start gap-3">
-                          <h3 className="text-lg font-semibold text-gray-900">{school.name}</h3>
+                        <div className="flex items-start flex-wrap gap-2">
+                          <h3 className="font-heading text-lg font-semibold text-ink">{school.name}</h3>
                           {school.no_loan_policy && (
-                            <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">
+                            <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
                               No-Loan Policy
                             </span>
                           )}
                           {school.hbcu && (
-                            <span className="bg-[#6B4380] text-white text-xs px-2 py-1 rounded">
+                            <span className="bg-plum text-white text-xs px-2 py-1 rounded-full">
                               HBCU
                             </span>
                           )}
                         </div>
-                        <p className="text-gray-700">{school.city}, {school.state}</p>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-ink-soft mt-1">{school.city}, {school.state}</p>
+                        <p className="text-sm text-ink-soft">
                           {school.control === 1 ? 'Public' : 'Private'} · {school.size?.toLocaleString()} students
                         </p>
                       </div>
 
                       {/* Gap Display */}
-                      <div className={`text-center px-6 py-3 rounded-lg border-2 ${getSeverityColor(school.gap_severity, gap)}`}>
+                      <div className={`text-center px-6 py-3 rounded-xl border-2 ${getSeverityColor(school.gap_severity, gap)}`}>
                         <div className="text-2xl font-bold">
                           {gap !== null && gap < 0 ? `+${formatMoney(Math.abs(gap))}` : formatMoney(gap)}
                         </div>
@@ -639,36 +632,36 @@ export default function Home() {
                     </div>
 
                     {/* Plain Language Summary */}
-                    <div className="mt-4 p-4 bg-[#F5F0E6] rounded-lg text-sm text-[#3D3530] leading-relaxed">
-                      <span className="font-medium text-gray-900">What this means: </span>
+                    <div className="mt-4 p-4 bg-cream rounded-xl text-sm text-ink-soft leading-relaxed">
+                      <span className="font-medium text-ink">What this means: </span>
                       {getPlainLanguageSummary(school, gap)}
                     </div>
 
                     {/* Details Row */}
-                    <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm">
+                    <div className="mt-4 pt-4 border-t border-ink/10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-sm">
                       <div>
-                        <span className="text-gray-700">Travel from Poconos:</span>
-                        <div className="font-medium">{school.travel_type === 'FLY' ? 'Fly' : 'Drive'} · {formatMoney(school.annual_travel_cost)}/yr</div>
+                        <span className="text-ink-soft">Travel from Poconos:</span>
+                        <div className="font-medium text-ink">{school.travel_type === 'FLY' ? 'Fly' : 'Drive'} · {formatMoney(school.annual_travel_cost)}/yr</div>
                       </div>
                       <div>
-                        <span className="text-gray-700">True Annual Cost:</span>
-                        <div className="font-bold text-lg">{formatMoney(trueCost)}</div>
+                        <span className="text-ink-soft">True Annual Cost:</span>
+                        <div className="font-bold text-lg text-clay-dark">{formatMoney(trueCost)}</div>
                       </div>
                       <div>
-                        <span className="text-gray-700">Admission Rate:</span>
-                        <div className="font-medium">{school.admission_rate ? `${(school.admission_rate * 100).toFixed(0)}%` : 'N/A'}</div>
+                        <span className="text-ink-soft">Admission Rate:</span>
+                        <div className="font-medium text-ink">{school.admission_rate ? `${(school.admission_rate * 100).toFixed(0)}%` : 'N/A'}</div>
                       </div>
                       <div>
-                        <span className="text-gray-700">SAT Range:</span>
-                        <div className="font-medium">{school.sat_read_25 && school.sat_math_25 ? `${school.sat_read_25 + school.sat_math_25}-${school.sat_read_75 + school.sat_math_75}` : 'N/A'}</div>
+                        <span className="text-ink-soft">SAT Range:</span>
+                        <div className="font-medium text-ink">{school.sat_read_25 && school.sat_math_25 ? `${school.sat_read_25 + school.sat_math_25}-${school.sat_read_75 + school.sat_math_75}` : 'N/A'}</div>
                       </div>
                       <div>
-                        <span className="text-gray-700">4-Year Grad Rate:</span>
-                        <div className="font-medium">{school.grad_rate_4yr ? `${(school.grad_rate_4yr * 100).toFixed(0)}%` : 'N/A'}</div>
+                        <span className="text-ink-soft">4-Year Grad Rate:</span>
+                        <div className="font-medium text-ink">{school.grad_rate_4yr ? `${(school.grad_rate_4yr * 100).toFixed(0)}%` : 'N/A'}</div>
                       </div>
                       <div>
-                        <span className="text-gray-700">Pell Grad Rate:</span>
-                        <div className="font-medium">{school.grad_rate_pell ? `${(school.grad_rate_pell * 100).toFixed(0)}%` : 'N/A'}</div>
+                        <span className="text-ink-soft">Pell Grad Rate:</span>
+                        <div className="font-medium text-ink">{school.grad_rate_pell ? `${(school.grad_rate_pell * 100).toFixed(0)}%` : 'N/A'}</div>
                       </div>
                     </div>
 
@@ -676,16 +669,16 @@ export default function Home() {
                     <div className="mt-4 flex flex-wrap gap-2">
                       <Link
                         href={`/school/${school.id}`}
-                        className="text-sm bg-[#CF7A3C] text-white px-3 py-1 rounded hover:bg-[#B86A2F]"
+                        className="text-sm font-medium bg-brand text-ink px-3 py-1.5 rounded-lg hover:bg-brand-dark transition-colors"
                       >
                         View Full Details →
                       </Link>
                       <button
                         onClick={() => toggleCompare(school.id)}
-                        className={`text-sm px-3 py-1 rounded ${
+                        className={`text-sm px-3 py-1.5 rounded-lg cursor-pointer transition-colors ${
                           compareList.includes(school.id)
-                            ? 'bg-[#5FBBC4] text-white hover:bg-[#4AA8B1]'
-                            : 'bg-[#6B4380]/10 text-[#6B4380] hover:bg-[#6B4380]/20'
+                            ? 'bg-plum text-white hover:bg-plum-light'
+                            : 'bg-plum/10 text-plum hover:bg-plum/20'
                         }`}
                       >
                         {compareList.includes(school.id) ? '✓ In Compare List' : '+ Add to Compare'}
@@ -695,7 +688,7 @@ export default function Home() {
                           href={school.npc_url.startsWith('http') ? school.npc_url : `https://${school.npc_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm bg-[#CF7A3C]/10 text-[#CF7A3C] px-3 py-1 rounded hover:bg-[#CF7A3C]/20"
+                          className="text-sm bg-brand/10 text-brand-dark px-3 py-1.5 rounded-lg hover:bg-brand/20 transition-colors"
                         >
                           Net Price Calculator →
                         </a>
@@ -705,7 +698,7 @@ export default function Home() {
                           href={school.website_url.startsWith('http') ? school.website_url : `https://${school.website_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm bg-[#3D3530]/10 text-[#3D3530] px-3 py-1 rounded hover:bg-[#3D3530]/20"
+                          className="text-sm bg-ink/5 text-ink-soft px-3 py-1.5 rounded-lg hover:bg-ink/10 transition-colors"
                         >
                           School Website →
                         </a>
@@ -721,10 +714,10 @@ export default function Home() {
 
       {/* Compare Bar */}
       {compareList.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-[#6B4380] text-white py-3 px-4 shadow-lg z-50">
+        <div className="fixed bottom-0 left-0 right-0 bg-plum text-white py-3 px-4 shadow-2xl z-50 rounded-t-2xl">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="bg-[#5A3770] px-3 py-1 rounded-full font-bold">
+              <span className="bg-plum-light px-3 py-1 rounded-full font-bold">
                 {compareList.length}
               </span>
               <span>school{compareList.length !== 1 ? 's' : ''} selected for comparison</span>
@@ -735,13 +728,13 @@ export default function Home() {
                   setCompareList([])
                   localStorage.setItem('compareSchools', JSON.stringify([]))
                 }}
-                className="text-white/70 hover:text-white text-sm underline"
+                className="text-white/70 hover:text-white text-sm underline cursor-pointer"
               >
                 Clear All
               </button>
               <Link
                 href="/compare"
-                className="bg-[#CF7A3C] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#B86A2F]"
+                className="bg-brand text-ink px-4 py-2 rounded-lg font-semibold hover:bg-brand-dark transition-colors"
               >
                 Compare Now →
               </Link>
@@ -750,13 +743,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Footer */}
-      <footer className={`bg-[#3D3530] text-[#F5F0E6]/70 py-8 px-4 mt-12 ${compareList.length > 0 ? 'pb-24' : ''}`}>
-        <div className="max-w-6xl mx-auto text-center text-sm">
-          <p>A tool by <strong className="text-white">The Crown Hub</strong> to help Pocono families find affordable colleges.</p>
-          <p className="mt-2">Data from U.S. Department of Education College Scorecard. Updated annually.</p>
-        </div>
-      </footer>
+      <SiteFooter reserveBottomBar={compareList.length > 0} />
     </main>
   )
 }

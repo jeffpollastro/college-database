@@ -106,7 +106,7 @@ export default function SchoolMap({
           <Circle
             center={proximityCenter}
             radius={milesToMeters(proximityRadiusMiles)}
-            pathOptions={{ color: '#6B4380', fillColor: '#6B4380', fillOpacity: 0.05, weight: 2, dashArray: '6 4' }}
+            pathOptions={{ color: '#43103F', fillColor: '#43103F', fillOpacity: 0.05, weight: 2, dashArray: '6 4' }}
           />
         )}
 
@@ -115,7 +115,7 @@ export default function SchoolMap({
           <CircleMarker
             center={proximityCenter}
             radius={7}
-            pathOptions={{ color: '#6B4380', fillColor: '#6B4380', fillOpacity: 1, weight: 2 }}
+            pathOptions={{ color: '#43103F', fillColor: '#43103F', fillOpacity: 1, weight: 2 }}
           >
             <Popup>
               <div className="text-sm font-medium">Your Location</div>
@@ -149,7 +149,7 @@ export default function SchoolMap({
                   <div className="mt-2 flex gap-2">
                     <a
                       href={`/school/${school.id}`}
-                      className="text-xs bg-[#CF7A3C] text-white px-2 py-1 rounded hover:bg-[#B86A2F]"
+                      className="text-xs bg-brand text-ink font-medium px-2 py-1 rounded hover:bg-brand-dark transition-colors"
                     >
                       Details →
                     </a>
