@@ -10,9 +10,15 @@ export default function SiteHeader() {
             alt="Crown Roots Foundation"
             className="h-[72px] md:h-[88px] w-auto object-contain"
           />
-          <span className="hidden md:inline-block h-10 w-px bg-ink/15" aria-hidden="true" />
-          <span className="hidden md:inline-block font-heading text-base font-semibold text-ink-soft tracking-wide">
-            College Search
+          <span className="h-10 w-px bg-ink/15" aria-hidden="true" />
+          <img
+            src="/io-logo.svg"
+            alt="I/O"
+            className="h-10 w-10 md:h-12 md:w-12 object-contain"
+          />
+          <span className="hidden sm:flex flex-col leading-tight">
+            <span className="font-heading text-lg font-bold text-ink tracking-wide">In/Root</span>
+            <span className="text-xs font-medium text-ink-soft tracking-wide">College Search Database</span>
           </span>
         </Link>
 

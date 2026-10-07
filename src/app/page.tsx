@@ -323,8 +323,18 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-cream">
       <SiteHeader />
+      <div className="bg-surface border-b border-ink/10">
+        <div className="max-w-2xl mx-auto px-4 py-8 md:py-10 flex flex-col items-center text-center">
+          <img src="/inroot-logo.svg" alt="In/Root" className="w-full max-w-md h-auto" />
+          <p className="mt-5 text-sm md:text-base italic text-ink-soft leading-relaxed">
+            <strong className="text-ink">In/Root, n.</strong> a family&rsquo;s insight{' '}
+            <strong className="text-ink">into</strong> The Gap, school by school; a student{' '}
+            <strong className="text-ink">en route</strong> to their own growth.
+          </p>
+        </div>
+      </div>
       <PageHero
-        eyebrow="Crown Roots Foundation"
+        eyebrow="In/Root · Crown Roots Foundation"
         title="Find Colleges You Can Actually Afford"
         subtitle="See your real out-of-pocket cost before you apply — built for Pocono families."
       />

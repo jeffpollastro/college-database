@@ -26,6 +26,18 @@ export default function SiteFooter({ reserveBottomBar = false }: SiteFooterProps
             </a>{' '}
             tool to help Pocono families find affordable colleges.
           </p>
+          <p className="mt-2">
+            In/Root is part of{' '}
+            <a
+              href="https://crownroots.org/tools.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cream font-semibold hover:text-brand-light underline underline-offset-2"
+            >
+              I/O
+            </a>
+            , the Crown Roots tools.
+          </p>
           <p className="mt-2 text-cream/50">Data from U.S. Department of Education College Scorecard. Updated annually.</p>
         </div>
       </div>

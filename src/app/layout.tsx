@@ -14,7 +14,7 @@ const bodyFont = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "College Search | Crown Roots Foundation",
+  title: "In/Root College Search | Crown Roots Foundation",
   description: "Find affordable colleges for Pocono families. See the real cost gap for your income level — a Crown Roots Foundation tool.",
 };
 
