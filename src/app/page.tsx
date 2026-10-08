@@ -7,6 +7,8 @@ import { supabase, School } from '@/lib/supabase'
 import SiteHeader from '@/components/SiteHeader'
 import PageHero from '@/components/PageHero'
 import SiteFooter from '@/components/SiteFooter'
+import SchoolPicks from '@/components/SchoolPicks'
+import type { IncomeBracket } from '@/data/hiddenValueSchools'
 
 const SchoolMap = dynamic(() => import('@/components/SchoolMap'), { ssr: false })
 
@@ -339,9 +341,12 @@ export default function Home() {
         subtitle="See your real out-of-pocket cost before you apply — built for Pocono families."
       />
 
-      {/* Search Section */}
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-surface rounded-2xl shadow-sm border border-ink/5 p-6 md:p-8 mb-8">
+        {/* Crown Top 10 and Hidden Value Schools */}
+        <SchoolPicks incomeBracket={incomeBracket as IncomeBracket} />
+
+        {/* Search Section */}
+        <div id="search" className="bg-surface rounded-2xl shadow-sm border border-ink/5 p-6 md:p-8 mb-8 scroll-mt-28">
           <h2 className="font-heading text-xl font-semibold text-ink mb-5">Find Affordable Colleges</h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
