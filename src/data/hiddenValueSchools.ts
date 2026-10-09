@@ -47,7 +47,7 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~2 hrs',
     endowment: '$24.8B',
     acceptRate: '6%',
-    gap: { '0-30k': 3287, '30-48k': 3287, '48-75k': 3287, '75-110k': null, '110k+': 15482 },
+    gap: { '0-30k': 3287, '30-48k': 3287, '48-75k': 3287, '75-110k': 10832, '110k+': 15482 },
     sourceLabel: 'School calculator',
     sourceUrl: 'https://npc.collegeboard.org/app/upenn',
   },

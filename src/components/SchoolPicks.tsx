@@ -238,8 +238,7 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
             </p>
             <p>
               These are estimates for one family, not offers and not averages. These schools count home equity and
-              other assets, so a family that owns a home should expect a higher number. Penn&rsquo;s calculator did
-              not return a usable result for the $75,001 to $110,000 range.
+              other assets, so a family that owns a home should expect a higher number.
             </p>
             <p>Acceptance rates are approximate. Run each school&rsquo;s calculator with your own numbers.</p>
           </div>
