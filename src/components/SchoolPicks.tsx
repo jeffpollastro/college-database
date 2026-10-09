@@ -218,9 +218,9 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
                   <td className="px-3 py-3 hidden sm:table-cell">{hiddenValueBaseline.acceptRate}</td>
                   <td className="px-3 py-3 hidden md:table-cell">Local</td>
                   <td className="px-3 py-3 hidden md:table-cell">
-                    <Link href={hiddenValueBaseline.sourceUrl} className="underline underline-offset-2 hover:text-ink">
+                    <a href={hiddenValueBaseline.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink">
                       {hiddenValueBaseline.sourceLabel}
-                    </Link>
+                    </a>
                   </td>
                 </tr>
               </tbody>

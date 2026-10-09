@@ -133,8 +133,8 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     endowment: '$3B',
     acceptRate: '28%',
     gap: { '0-30k': 9049, '30-48k': 9049, '48-75k': 9049, '75-110k': 9759, '110k+': 14594 },
-    sourceLabel: 'Rochester financial aid',
-    sourceUrl: 'https://www.rochester.edu/financial-aid/',
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/Rochester',
     note: 'Aid offer includes a $3,500 loan',
   },
   {
@@ -162,6 +162,6 @@ export const hiddenValueBaseline: HiddenValueSchool =
     endowment: '$23.8M',
     acceptRate: '90%+',
     gap: { '0-30k': 11745, '30-48k': 11745, '48-75k': 16030, '75-110k': 24298, '110k+': 24298 },
-    sourceLabel: 'ESU calculator',
-    sourceUrl: '/school/3e587b5e-1cf8-46f6-b237-048aa3a7b804',
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://app.meadowfi.com/esu',
   }
