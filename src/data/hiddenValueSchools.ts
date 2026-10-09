@@ -2,11 +2,13 @@
 // low-income family little or nothing. Mirrors the table on
 // crownroots.org/college-database.html. Keep the two in sync.
 //
-// `gap` is net price by family income bracket. Figures come from Tuition Tracker
-// (IPEDS, FY2023-24), except Lehigh, whose Lehigh Commitment is newer than the
-// published data: its figures come from Lehigh's own net price calculator for
-// 2027-28, run 2026-10-08 for a Pennsylvania household of five at one income in
-// each bracket.
+// `gap` is yearly net price (full cost of attendance less grants, before loans)
+// from each school's own net price calculator, run October 2026 for one sample
+// family: Pennsylvania, household of five, renting, $2,000 in savings. Each
+// bracket was run at one income: $20,000, $39,000, $61,500, $92,500, $130,000.
+// null means the calculator gave no usable result. East Stroudsburg was run for
+// a student with a 4.0 GPA. Published averages (IPEDS, Tuition Tracker) are not
+// used here because they lag behind current aid policy.
 
 export type IncomeBracket = '0-30k' | '30-48k' | '48-75k' | '75-110k' | '110k+'
 
@@ -18,7 +20,7 @@ export type HiddenValueSchool = {
   drive: string
   endowment: string
   acceptRate: string
-  gap: Record<IncomeBracket, number>
+  gap: Record<IncomeBracket, number | null>
   sourceLabel: string
   sourceUrl: string
   note?: string
@@ -33,9 +35,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~1 hr 40 min',
     endowment: '$37.7B',
     acceptRate: '5%',
-    gap: { '0-30k': 46, '30-48k': 396, '48-75k': 1369, '75-110k': 5036, '110k+': 40588 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=186131',
+    gap: { '0-30k': 0, '30-48k': 0, '48-75k': 0, '75-110k': 0, '110k+': 0 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://admission.princeton.edu/cost-aid/net-price-calculator',
   },
   {
     id: '2fe840f7-9782-481e-80b8-6904a0fdec15',
@@ -45,9 +47,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~2 hrs',
     endowment: '$24.8B',
     acceptRate: '6%',
-    gap: { '0-30k': 0, '30-48k': 350, '48-75k': 11559, '75-110k': 28210, '110k+': 61979 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=215062',
+    gap: { '0-30k': 3287, '30-48k': 3287, '48-75k': 3287, '75-110k': null, '110k+': 15482 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/upenn',
   },
   {
     id: '83201163-b4f2-437f-a9a9-3a882c9c0718',
@@ -57,9 +59,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~4 hrs',
     endowment: '$1.1B',
     acceptRate: '19%',
-    gap: { '0-30k': 6832, '30-48k': 3006, '48-75k': 15286, '75-110k': 24507, '110k+': 54146 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=190099',
+    gap: { '0-30k': 4900, '30-48k': 4900, '48-75k': 4900, '75-110k': 6600, '110k+': 11200 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/colgate',
   },
   {
     id: '6193c12d-b6e1-4e12-bf73-5606af246fea',
@@ -69,9 +71,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~2.5 hrs',
     endowment: '$2.5B',
     acceptRate: '9%',
-    gap: { '0-30k': 8644, '30-48k': 5565, '48-75k': 12864, '75-110k': 25228, '110k+': 53443 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=216287',
+    gap: { '0-30k': 3700, '30-48k': 3700, '48-75k': 3700, '75-110k': 5428, '110k+': 10039 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/swarthmore',
   },
   {
     id: '0663de5e-1257-487a-9880-c641b068f307',
@@ -81,9 +83,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~45 min',
     endowment: '$1.1B',
     acceptRate: '39%',
-    gap: { '0-30k': 14197, '30-48k': 8312, '48-75k': 12148, '75-110k': 14046, '110k+': 58735 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=213385',
+    gap: { '0-30k': 4047, '30-48k': 4047, '48-75k': 4047, '75-110k': 7957, '110k+': 16592 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/lafayette',
   },
   {
     id: 'a7f473c0-ed68-4446-ab41-8663288ed551',
@@ -94,7 +96,7 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     endowment: '$2.2B',
     acceptRate: '29%',
     gap: { '0-30k': 6400, '30-48k': 6400, '48-75k': 9900, '75-110k': 13050, '110k+': 18950 },
-    sourceLabel: 'Lehigh calculator',
+    sourceLabel: 'School calculator',
     sourceUrl: 'https://npc.collegeboard.org/app/lehigh',
     note: 'Lehigh Commitment',
   },
@@ -106,9 +108,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~2.5 hrs',
     endowment: '$875M',
     acceptRate: '15%',
-    gap: { '0-30k': 8331, '30-48k': 10386, '48-75k': 13283, '75-110k': 20102, '110k+': 50879 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=212911',
+    gap: { '0-30k': 4200, '30-48k': 4200, '48-75k': 5700, '75-110k': 7428, '110k+': 13039 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/haverford',
   },
   {
     id: 'd334954a-d9cd-43de-a141-6115ae3f495e',
@@ -118,9 +120,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~4 hrs',
     endowment: '$1.1B',
     acceptRate: '20%',
-    gap: { '0-30k': 8977, '30-48k': 10611, '48-75k': 12147, '75-110k': 23051, '110k+': 52453 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=191515',
+    gap: { '0-30k': 6900, '30-48k': 6900, '48-75k': 6900, '75-110k': 8628, '110k+': 13239 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/hamilton',
   },
   {
     id: '71860ee6-f67f-4cd3-bf0a-91793de00f5d',
@@ -130,9 +132,10 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~4.5 hrs',
     endowment: '$3B',
     acceptRate: '28%',
-    gap: { '0-30k': 10741, '30-48k': 13523, '48-75k': 23403, '75-110k': 30946, '110k+': 51942 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=195030',
+    gap: { '0-30k': 9049, '30-48k': 9049, '48-75k': 9049, '75-110k': 9759, '110k+': 14594 },
+    sourceLabel: 'Rochester financial aid',
+    sourceUrl: 'https://www.rochester.edu/financial-aid/',
+    note: 'Aid offer includes a $3,500 loan',
   },
   {
     id: '1c33a43c-aa7c-4f2e-bee9-789c26069a21',
@@ -142,9 +145,9 @@ export const hiddenValueSchools: HiddenValueSchool[] = [
     drive: '~2 hrs',
     endowment: '$900M',
     acceptRate: '35%',
-    gap: { '0-30k': 23316, '30-48k': 13643, '48-75k': 26316, '75-110k': 31301, '110k+': 61929 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=211291',
+    gap: { '0-30k': 9535, '30-48k': 9535, '48-75k': 9535, '75-110k': 12190, '110k+': 16830 },
+    sourceLabel: 'School calculator',
+    sourceUrl: 'https://npc.collegeboard.org/app/bucknell',
   },
 ]
 
@@ -158,7 +161,7 @@ export const hiddenValueBaseline: HiddenValueSchool =
     drive: '0 min',
     endowment: '$23.8M',
     acceptRate: '90%+',
-    gap: { '0-30k': 16796, '30-48k': 15863, '48-75k': 19001, '75-110k': 23104, '110k+': 25024 },
-    sourceLabel: 'Tuition Tracker',
-    sourceUrl: 'https://www.tuitiontracker.org/school.html?unitid=212115',
+    gap: { '0-30k': 11745, '30-48k': 11745, '48-75k': 16030, '75-110k': 24298, '110k+': 24298 },
+    sourceLabel: 'ESU calculator',
+    sourceUrl: '/school/3e587b5e-1cf8-46f6-b237-048aa3a7b804',
   }

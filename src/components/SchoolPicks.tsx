@@ -25,9 +25,10 @@ const bracketLabels: Record<IncomeBracket, string> = {
   '110k+': '$110,001+',
 }
 
-const money = (n: number) => `$${n.toLocaleString('en-US')}`
+const money = (n: number | null) => (n == null ? 'Not available' : `$${n.toLocaleString('en-US')}`)
 
-function gapClass(gap: number) {
+function gapClass(gap: number | null) {
+  if (gap == null) return 'text-ink-soft'
   if (gap <= 2500) return 'text-mint-ink'
   if (gap <= 7500) return 'text-brand-dark'
   if (gap <= 15000) return 'text-clay-dark'
@@ -40,7 +41,9 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
   // Follow the search form's income until the visitor picks one here.
   const activeBracket = bracket ?? incomeBracket
   const hasOlderData = crownPicks.some((p) => p.olderData)
-  const sorted = [...hiddenValueSchools].sort((a, b) => a.gap[activeBracket] - b.gap[activeBracket])
+  const sorted = [...hiddenValueSchools].sort(
+    (a, b) => (a.gap[activeBracket] ?? Infinity) - (b.gap[activeBracket] ?? Infinity),
+  )
 
   const tabButton = (id: Tab, label: string) => (
     <button
@@ -145,8 +148,9 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
       {tab === 'hidden' && (
         <div role="tabpanel" id="picks-panel-hidden" aria-labelledby="picks-tab-hidden">
           <p className="mt-4 rounded-xl border-l-4 border-brand bg-cream p-4 text-sm text-ink leading-relaxed">
-            These schools are hard to get into, and some admit fewer than one in ten applicants. For a student who
-            gets in, their aid can make them cheaper than staying local. East Stroudsburg is shown last for comparison.
+            These prices only matter to a student who gets in, and that takes top grades and test scores. Princeton,
+            Penn, and Swarthmore admit fewer than one in ten applicants. For a student who is admitted, their aid can
+            make them cheaper than staying local. East Stroudsburg is shown last for comparison.
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -193,7 +197,6 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
                     </td>
                     <td className={`px-3 py-3 font-heading font-semibold whitespace-nowrap ${gapClass(s.gap[activeBracket])}`}>
                       {money(s.gap[activeBracket])}
-                      {s.sourceLabel !== 'Tuition Tracker' && <span aria-hidden="true">*</span>}
                     </td>
                     <td className="px-3 py-3 hidden sm:table-cell">{s.acceptRate}</td>
                     <td className="px-3 py-3 hidden md:table-cell whitespace-nowrap">{s.drive}</td>
@@ -214,7 +217,11 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
                   </td>
                   <td className="px-3 py-3 hidden sm:table-cell">{hiddenValueBaseline.acceptRate}</td>
                   <td className="px-3 py-3 hidden md:table-cell">Local</td>
-                  <td className="px-3 py-3 hidden md:table-cell">{hiddenValueBaseline.sourceLabel}</td>
+                  <td className="px-3 py-3 hidden md:table-cell">
+                    <Link href={hiddenValueBaseline.sourceUrl} className="underline underline-offset-2 hover:text-ink">
+                      {hiddenValueBaseline.sourceLabel}
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -222,14 +229,17 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
 
           <div className="mt-4 text-xs text-ink-soft leading-relaxed space-y-1.5">
             <p>
-              <strong className="text-ink">How to read the cost:</strong> it is the average net price families in that
-              income range paid after grants and scholarships, from Tuition Tracker (federal data, 2023-24). Loans are
-              not counted.
+              <strong className="text-ink">How to read the cost:</strong> it is the yearly net price (tuition, fees,
+              housing, food, books, and personal costs, less grants, before loans) from each school&rsquo;s own net
+              price calculator, run in October 2026. The sample family: Pennsylvania residents, household of five,
+              renting, with $2,000 in savings. Each income range was run at one income: $20,000, $39,000, $61,500,
+              $92,500, and $130,000, so &ldquo;$110,001+&rdquo; describes a family near $130,000, not higher incomes.
+              East Stroudsburg was run for a student with a 4.0 GPA.
             </p>
             <p>
-              * Lehigh&rsquo;s figures come from its own net price calculator for 2027-28, because the Lehigh Commitment
-              is newer than the published data. They are estimates for one sample family (Pennsylvania, household of
-              five), not averages.
+              These are estimates for one family, not offers and not averages. These schools count home equity and
+              other assets, so a family that owns a home should expect a higher number. Penn&rsquo;s calculator did
+              not return a usable result for the $75,001 to $110,000 range.
             </p>
             <p>Acceptance rates are approximate. Run each school&rsquo;s calculator with your own numbers.</p>
           </div>
