@@ -81,7 +81,7 @@ A free college affordability tool for Pocono families that shows "The Gap" - wha
 
 ### Database
 
-- **2,947 schools** in the database
+- **2,901 schools** in the database
 - Data includes:
   - Basic info (name, location, size, type)
   - Cost of attendance
