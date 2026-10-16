@@ -41,6 +41,7 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
   // Follow the search form's income until the visitor picks one here.
   const activeBracket = bracket ?? incomeBracket
   const hasOlderData = crownPicks.some((p) => p.olderData)
+  const hasCanBeLower = crownPicks.some((p) => p.canBeLower)
   const sorted = [...hiddenValueSchools].sort(
     (a, b) => (a.gap[activeBracket] ?? Infinity) - (b.gap[activeBracket] ?? Infinity),
   )
@@ -108,6 +109,7 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
                       <span className="font-heading font-semibold text-brand-dark whitespace-nowrap">
                         {pick.owed}
                         {pick.olderData && <span aria-hidden="true">*</span>}
+                        {pick.canBeLower && <span aria-hidden="true">&dagger;</span>}
                         <span className="font-sans font-normal text-xs text-ink-soft"> / year</span>
                       </span>
                     </span>
@@ -123,13 +125,28 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
 
           <div className="mt-5 text-xs text-ink-soft leading-relaxed space-y-1.5">
             <p>
-              <strong className="text-ink">How to read the price:</strong> it is what one sample family would owe the
-              school each year for tuition, fees, housing, and food after grants, before loans. The sample family:
-              Pennsylvania residents, household of five, $56,000 income, student with a 3.5 GPA and 1110 SAT living
-              on campus. Prices come from each school&rsquo;s own cost calculator and are estimates, not offers. Your
-              cost will be different, so run the school&rsquo;s calculator with your own numbers.
+              <strong className="text-ink">How to read the price:</strong> it is the full yearly cost for one sample
+              family: tuition, fees, housing, food, books, travel, and personal costs, less grants, before loans. It
+              is measured the same way as the Hidden Value Schools tab. The sample family: Pennsylvania residents,
+              household of five, $56,000 income, student with a 3.5 GPA and 1110 SAT living on campus. Prices come
+              from each school&rsquo;s own cost calculator and are estimates, not offers. Books, travel, and personal
+              costs are each school&rsquo;s own estimate. Your cost will be different, so run the school&rsquo;s
+              calculator with your own numbers.
             </p>
-            {hasOlderData && <p>* Based on older calculator data. Expect the current figure to differ.</p>}
+            {hasOlderData && (
+              <p>
+                * Estimate, built from older calculator data or the school&rsquo;s published budget. Expect the current
+                figure to differ. &ldquo;Being rerun&rdquo; means the school&rsquo;s calculator is being run again for
+                the full cost.
+              </p>
+            )}
+            {hasCanBeLower && (
+              <p>
+                &dagger; Can be lower. YSU&rsquo;s estimate does not include YSU Foundation scholarships (more than $11
+                million a year), department awards, or outside scholarships. The $2,000 Housing Grant in this figure
+                needs a separate application.
+              </p>
+            )}
             <p>
               Last reviewed {crownPicksMeta.lastReviewed}.{' '}
               <a
@@ -230,11 +247,18 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
           <div className="mt-4 text-xs text-ink-soft leading-relaxed space-y-1.5">
             <p>
               <strong className="text-ink">How to read the cost:</strong> it is the yearly net price (tuition, fees,
-              housing, food, books, and personal costs, less grants, before loans) from each school&rsquo;s own net
-              price calculator, run in October 2026. The sample family: Pennsylvania residents, household of five,
-              renting, with $2,000 in savings. Each income range was run at one income: $20,000, $39,000, $61,500,
+              housing, food, books, travel, and personal costs, less grants, before loans) from each school&rsquo;s
+              own net price calculator, run in October 2026. The sample family: Pennsylvania residents, household of
+              five, renting, with $2,000 in savings, and a student living on campus. Each income range was run at one income: $20,000, $39,000, $61,500,
               $92,500, and $130,000, so &ldquo;$110,001+&rdquo; describes a family near $130,000, not higher incomes.
               East Stroudsburg was run for a student with a 4.0 GPA.
+            </p>
+            <p>
+              <strong className="text-ink">Comparing with the Crown Top 10:</strong> both lists use the same full
+              cost. East Stroudsburg&rsquo;s price differs between them only because of income and grades. For a
+              $56,000 family, ESU costs $11,745 a year for a 4.0 student and $16,239 for the 3.5 student in the Crown
+              Top 10. The $48,001 to $75,000 range here was run at $61,500, where ESU&rsquo;s PA State Grant falls
+              below $900, so it shows $16,030.
             </p>
             <p>
               These are estimates for one family, not offers and not averages. These schools count home equity and

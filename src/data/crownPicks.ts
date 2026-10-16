@@ -4,11 +4,14 @@
 // Source of truth and method: crown_hub/03_College_Database/Crown_Picks_Top10_2026-10.md
 // in the ai_tool repo. Update `lastReviewed` whenever this list changes.
 //
-// `owed` is what one sample family owes the school per year for tuition, fees,
-// housing, and food after grants, before loans. Sample family: Pennsylvania
+// `owed` is the full net price: the school's full cost of attendance (tuition,
+// fees, housing, food, books, travel, and personal costs) less grants, before
+// loans. Same measure as the Hidden Value list. Sample family: Pennsylvania
 // residents, household of five, $56,000 income, student with a 3.5 GPA and
 // 1110 SAT living on campus. Figures come from each school's own calculator.
-// `olderData` marks figures built on pre-2024 calculator data.
+// `olderData` marks estimates: older calculator data, or a calculator result
+// plus the school's published allowance for books, travel, and personal costs.
+// `canBeLower` marks a school whose calculator leaves out scholarships it awards.
 
 export type CrownPick = {
   rank: number
@@ -18,6 +21,7 @@ export type CrownPick = {
   state: string
   owed: string
   olderData?: boolean
+  canBeLower?: boolean // scholarships the school's calculator leaves out
   degrees: string
   why: string
 }
@@ -34,7 +38,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '215284',
     name: 'Pitt-Johnstown',
     state: 'PA',
-    owed: '$7,411',
+    owed: '$13,050',
     olderData: true,
     degrees: 'Computer, electrical, mechanical, chemical, and civil engineering; computer science; finance; accounting',
     why: 'Lowest bill we found. Pitt matches the Pell Grant dollar for dollar.',
@@ -45,7 +49,8 @@ export const crownPicks: CrownPick[] = [
     unitid: '206695',
     name: 'Youngstown State',
     state: 'OH',
-    owed: '$10,966',
+    owed: '$17,452',
+    canBeLower: true,
     degrees: 'Electrical, chemical, mechanical, civil, and industrial engineering; computer science; nursing; accounting',
     why: 'Charges Pennsylvania students almost the Ohio price. Strong engineering.',
   },
@@ -55,7 +60,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '216038',
     name: 'Slippery Rock',
     state: 'PA',
-    owed: '$8,666',
+    owed: 'Being rerun',
     degrees: 'Safety management; civil and mechanical engineering; nursing; accounting; finance',
     why: 'Best graduation rates on the list.',
   },
@@ -65,7 +70,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '498562',
     name: 'Commonwealth University (Bloomsburg)',
     state: 'PA',
-    owed: '$8,732',
+    owed: '$13,332',
     degrees: 'Nursing; computer science; business; special education; social work',
     why: 'Large nursing program about 90 minutes from the Poconos.',
   },
@@ -75,7 +80,8 @@ export const crownPicks: CrownPick[] = [
     unitid: '498571',
     name: 'PennWest',
     state: 'PA',
-    owed: '$8,747',
+    owed: '$13,580',
+    olderData: true,
     degrees: 'Nursing; mechatronics and electrical engineering technology; accounting; finance; art',
     why: 'Clear scholarship amounts by GPA, so families know where they stand.',
   },
@@ -85,8 +91,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '213020',
     name: 'Indiana University of Pennsylvania',
     state: 'PA',
-    owed: '$7,700 to $9,800',
-    olderData: true,
+    owed: 'Being rerun',
     degrees: 'Safety sciences; nursing; computer science; finance; accounting; design',
     why: 'Safety sciences graduates earn as much as engineers.',
   },
@@ -96,7 +101,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '212115',
     name: 'East Stroudsburg',
     state: 'PA',
-    owed: '$10,125',
+    owed: '$16,239',
     degrees: 'Computer science; nursing; special education; social work',
     why: 'Home. Computing and nursing are the programs to look at.',
   },
@@ -106,7 +111,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '200800',
     name: 'University of Akron',
     state: 'OH',
-    owed: '$15,827',
+    owed: '$20,655',
     degrees: 'Chemical, mechanical, civil, and biomedical engineering; finance; accounting',
     why: 'Paid co-op built into engineering. Costs more than Youngstown State.',
   },
@@ -116,9 +121,10 @@ export const crownPicks: CrownPick[] = [
     unitid: '190725',
     name: 'Daemen University',
     state: 'NY',
-    owed: '$14,325',
+    owed: '$16,825',
+    olderData: true,
     degrees: 'Nursing; health science paths toward physical therapy and physician assistant',
-    why: 'A private college whose aid brings it under $15,000.',
+    why: 'A private college whose aid brings it close to the state schools.',
   },
   {
     rank: 10,
@@ -126,7 +132,7 @@ export const crownPicks: CrownPick[] = [
     unitid: '213349',
     name: 'Kutztown University',
     state: 'PA',
-    owed: '$9,596',
+    owed: 'Being rerun',
     degrees: 'Communication design; teacher education; social work',
     why: 'Our creative pick, about an hour from the Poconos.',
   },
