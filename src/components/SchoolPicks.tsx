@@ -136,8 +136,7 @@ export default function SchoolPicks({ incomeBracket }: { incomeBracket: IncomeBr
             {hasOlderData && (
               <p>
                 * Estimate, built from older calculator data or the school&rsquo;s published budget. Expect the current
-                figure to differ. &ldquo;Being rerun&rdquo; means the school&rsquo;s calculator is being run again for
-                the full cost.
+                figure to differ.
               </p>
             )}
             {hasCanBeLower && (
